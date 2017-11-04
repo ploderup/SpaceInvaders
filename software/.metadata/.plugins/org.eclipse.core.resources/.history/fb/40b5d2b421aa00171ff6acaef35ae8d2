@@ -1,0 +1,55 @@
+/******************************************************************************
+ * globals.h
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Setup functions for retrieval of various
+ * 				 object positions.
+ * 03 Oct 2017 | Added bunker struct. Added enumerated type for bunker
+ *               states.
+ *****************************************************************************/
+
+#ifndef globals_h
+#define globals_h
+
+#include <stdint.h>
+#include <stdbool.h>
+
+typedef struct point_t {uint16_t x; uint16_t y;} point_t;
+typedef struct {uint16_t x; uint16_t y; bool active;} alienBullet_t;
+
+static bool aliensDeaths[NUM_ALIENS];
+
+void globals_setTankPosition(uint16_t val);
+uint16_t globals_getTankPosition();
+
+void globals_setTankBulletPosition(point_t point);
+point_t globals_getTankBulletPosition();
+
+void globals_setAlienPosition(point_t point);
+point_t globals_getAlienPosition();
+
+void globals_setAlienBullet0(alienBullet_t bullet);
+alienBullet_t globals_getAlienBullet0();
+
+void globals_setAlienBullet1(alienBullet_t bullet);
+alienBullet_t globals_getAlienBullet1();
+
+void globals_setAlienBullet2(alienBullet_t bullet);
+alienBullet_t globals_getAlienBullet2();
+
+void globals_setAlienBullet3(alienBullet_t bullet);
+alienBullet_t globals_getAlienBullet3();
+
+// Possibly for adjusting alien deaths
+void globals_setAlienDeaths();
+void globals_getAlienDeaths();
+
+#endif /* GLOBALS_H_ */

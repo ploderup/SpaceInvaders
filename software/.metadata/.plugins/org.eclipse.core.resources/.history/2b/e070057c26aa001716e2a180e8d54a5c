@@ -1,0 +1,50 @@
+/******************************************************************************
+ * main.c
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Dr. Hutchings (Original Code)
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Basic modifications made to allow for user
+ * 				 input with 'getchar()'.
+ *
+ * 	Time Spent: Fri - 2H, Mon - 2H
+ *****************************************************************************/
+// Includes
+//#pragma once
+#include <stdio.h>
+#include "platform.h"
+#include "render.h"
+
+int main() {
+	init_platform();                   // Necessary for all programs.
+	render_initScreen();
+	char input;
+
+	xil_printf("Welcome to Space Invaders [Demo]!\r\n");
+	xil_printf("Options:\r\n");
+	xil_printf("\t4 Move tank left\r\n");
+	xil_printf("\t6 Move tank right\r\n");
+	xil_printf("\t8 Move aliens\r\n");
+	xil_printf("\t2 Kill alien\r\n");
+	xil_printf("\t5 Fire tank bullet\r\n");
+	xil_printf("\t3 Fire random alien missile\r\n");
+	xil_printf("\t9 Update all bullets\r\n");
+	xil_printf("\t7 Erode bunker\r\n\n");
+	while(1) {
+		xil_printf("Choose option: \r\n");
+		input = getchar();
+		render_drawAll(input);
+	}
+	cleanup_platform();
+
+    return 0;
+}
+
+

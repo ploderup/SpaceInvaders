@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2009 Xilinx, Inc.  All rights reserved.
+ *
+ * Xilinx, Inc.
+ * XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" AS A
+ * COURTESY TO YOU.  BY PROVIDING THIS DESIGN, CODE, OR INFORMATION AS
+ * ONE POSSIBLE   IMPLEMENTATION OF THIS FEATURE, APPLICATION OR
+ * STANDARD, XILINX IS MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION
+ * IS FREE FROM ANY CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE
+ * FOR OBTAINING ANY RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.
+ * XILINX EXPRESSLY DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO
+ * THE ADEQUACY OF THE IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO
+ * ANY WARRANTIES OR REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE
+ * FROM CLAIMS OF INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
+
+/*
+ * helloworld.c: simple test application
+ */
+
+#include <stdio.h>
+#include "platform.h"
+#include "globals.h"
+#include "xaxivdma.h"
+
+void print(char *str);
+
+int main()
+{
+    init_platform();
+
+    int Status; // Keep track of success/failure of system function calls.
+	XAxiVdma videoDMAController;
+	// There are 3 steps to initializing the vdma driver and IP.
+	// Step 1: lookup the memory structure that is used to access the vdma driver.
+	XAxiVdma_Config * VideoDMAConfig = XAxiVdma_LookupConfig(XPAR_AXI_VDMA_0_DEVICE_ID);
+	// Step 2: Initialize the memory structure and the hardware.
+	if(XST_FAILURE == XAxiVdma_CfgInitialize(&videoDMAController, VideoDMAConfig,	XPAR_AXI_VDMA_0_BASEADDR)) {
+		xil_printf("VideoDMA Did not initialize.\r\n");
+	}
+	// Step 3: (optional) set the frame store number.
+	if(XST_FAILURE ==  XAxiVdma_SetFrmStore(&videoDMAController, 2, XAXIVDMA_READ)) {
+		xil_printf("Set Frame Store Failed.");
+	}
+	// Initialization is complete at this point.
+
+
+    point_t currentPosition;
+    currentPosition.x = 99;
+    currentPosition.y = 11;
+
+    setTankPositionGlobal(14);
+    printf("tank position: %d\n\r", getTankPositionGlobal());
+
+    setTankBulletPosition(currentPosition);
+    printf("tank x:%d tank y:%d\n\r", getTankBulletPosition().x, getTankBulletPosition().y);
+
+    // What does this do?
+    point_t anotherTankBulletPosition = getTankBulletPosition();
+    anotherTankBulletPosition.x = 55;
+    anotherTankBulletPosition.y = 44;
+    // Does this affect the value of the global?
+    printf("tank x:%d tank y:%d\n\r", getTankBulletPosition().x, getTankBulletPosition().y);
+
+    cleanup_platform();
+
+    return 0;
+}

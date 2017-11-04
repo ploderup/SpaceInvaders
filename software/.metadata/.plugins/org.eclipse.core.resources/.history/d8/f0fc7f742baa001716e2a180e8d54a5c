@@ -1,0 +1,82 @@
+/*******************************************************************************
+ * render.c
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Wrote prototype for 'drawAll' function.
+ * 04 Oct 2017 | Wrote all current function prototypes.
+ ******************************************************************************/
+// Includes
+#pragma once
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include "alien.h"
+#include "bunker.h"
+#include "functions.h"
+#include "globals.h"
+#include "graphics.h"
+#include "time.h"
+#include "unistd.h"
+#include "xaxivdma.h"
+#include "xio.h"
+#include "xparameters.h"
+
+// Screen dimensions
+#define SCREEN_WIDTH	640
+#define SCREEN_HEIGHT	480
+#define IMG_SCALE		2
+#define SCALE 2
+
+// Tank Definitions
+#define TANK_Y_POS 400
+#define TANK_HEIGHT 8
+#define TANK_WIDTH 15
+#define TANK_START_POS 100 
+#define PX_TO_MOVE 4
+#define TANK_TOP_START 6
+#define TANK_BULLET_OFFSET 8 // This is the pixels over from the edge of the tank to fire the bullet
+
+#define BULLET_HEIGHT 5 // This is the height of the tank bullet
+#define ALIEN_BULLET_WIDTH 3
+
+// Color Definitions
+#define GREEN 0x0000FF00
+#define WHITE 0x00FFFFFF
+#define BLACK 0x00000000
+
+// Key Definitions
+#define MOVE_TANK_R		'6'
+#define MOVE_TANK_L		'4'
+#define UPDATE_ALIENS	'8'
+#define KILL_ALIEN		'2'
+#define FIRE_TANK		'5'
+#define FIRE_ALIEN		'3'
+#define UPDATE_BULLETS	'9'
+#define ERODE_BUNKER	'7'
+
+enum direction_t {Left, Right, Down} tankDirection, alienDirection;
+
+// Function Prototypes
+void render_initScore();
+void render_initLives();
+void render_initAlienBlock();
+void render_initBunkers();
+void render_drawBunkers();
+void render_drawBunker(uint8_t bunk_index);
+void render_eraseBunkerSection(uint8_t section, Bunker bunker);
+void render_drawAliens();
+void render_fireAlien();
+void render_initTank();
+void render_drawTank();
+void render_fireTank();
+void render_drawBullets();
+void render_drawAll(char input);
+void render_initScreen();

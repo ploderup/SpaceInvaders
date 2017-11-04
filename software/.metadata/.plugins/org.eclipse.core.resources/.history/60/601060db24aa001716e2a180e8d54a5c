@@ -1,0 +1,39 @@
+/******************************************************************************
+ * main.c
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Dr. Hutchings (Original Code)
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Basic modifications made to allow for user
+ * 				 input with 'getchar()'.
+ *
+ * 	Time Spent: Fri - 2H, Mon - 2H
+ *****************************************************************************/
+// Includes
+//#pragma once
+#include <stdio.h>
+#include "platform.h"
+#include "render.h"
+
+int main() {
+	init_platform();                   // Necessary for all programs.
+	render_initScreen();
+	char input;
+	while(1) {
+		render_drawAll(input);
+		input = getchar();
+		xil_printf("Character: %c\r\n", input);
+	}
+	cleanup_platform();
+
+    return 0;
+}
+
+

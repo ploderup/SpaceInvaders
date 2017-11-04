@@ -1,0 +1,846 @@
+/******************************************************************************
+ * render.c
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Wrote outlines for all 'draw...' functions.
+ * 04 Oct 2017 | Lots of bug fixes. Added functionality to restore and erode
+ *				 bunkers. Still need to remove some magic numbers in switch
+ *				 statements.
+ *****************************************************************************/
+// Includes
+#include "render.h"
+#include "alien.h"
+
+#define FRAME_BUFFER_0_ADDR 0xC1000000  // Starting location in DDR where we will store the images that we display.
+unsigned int* framePointer = (unsigned int *) FRAME_BUFFER_0_ADDR;
+
+
+void render_initScore() {
+	
+}
+
+void render_initLives() {
+	
+}
+
+void render_initAlienBlock() { 
+	
+	alienDirection = Right; // Aliens will initially move to the right
+	uint16_t pixelRow; // Track which row we are on when drawing the alien
+	uint16_t pixelCol; // Track which col we are on when drawing the alien
+	uint16_t curCol; // Track which row of the alien block we are on
+	uint16_t curRow; // Track which col of the alien block we are on
+
+	point_t alienPos;
+	alienPos.x = ALIEN_START_X; // Initialize the x position of the alien block
+	alienPos.y = ALIEN_START_Y; // Initialize the y position of the alien block
+	globals_setAlienPosition(alienPos); // Set the alien position globally
+
+	// Draw the initial position of all of the aliens
+	for(curRow = 0; curRow < ALIEN_ROWS; curRow++){ // loop through row by row in the alien block
+		for(curCol = 0; curCol < ALIENS_PER_ROW; curCol++){ // loop through all of the columns in a row in the alien block
+			for(pixelRow = alienPos.y; pixelRow < (alienPos.y + (SINGLE_ALIEN_HEIGHT * IMG_SCALE)); pixelRow++){
+				for(pixelCol = alienPos.x; pixelCol < (alienPos.x + (SINGLE_ALIEN_WIDTH * IMG_SCALE)); pixelCol++){
+					if(curRow < 1){ // If we are on the first row then draw the first type of alien
+						framePointer[pixelRow*640 + pixelCol] = ((alien_top_in_12x8[(pixelRow - alienPos.y)/IMG_SCALE]>>(pixelCol - alienPos.x)/IMG_SCALE)&1)*WHITE;
+					}else if(curRow < 3){ // If we are on the 2nd or 3rd rows then draw the second type of alien
+						framePointer[pixelRow*640 + pixelCol] = ((alien_middle_in_12x8[(pixelRow - alienPos.y)/IMG_SCALE]>>(pixelCol - alienPos.x)/IMG_SCALE)&1)*WHITE;
+					}else{ // For the 4th and 5th rows draw the third type of alien
+						framePointer[pixelRow*640 + pixelCol] = ((alien_bottom_in_12x8[(pixelRow - alienPos.y)/IMG_SCALE]>>(pixelCol - alienPos.x)/IMG_SCALE)&1)*WHITE;
+					}
+				}
+			}
+			alienPos.x += (SINGLE_ALIEN_WIDTH * IMG_SCALE) + ALIEN_PADDING; // Move over 1 alien for each col
+		}
+		alienPos.x = ALIEN_START_X;
+		alienPos.y += ((SINGLE_ALIEN_HEIGHT * IMG_SCALE) + ALIEN_PADDING); // Move down 1 alien for each row
+	}
+}
+
+/**
+ * FUNCTION
+ * Initialize Bunkers
+ * 
+ * FUNCTIONALITY
+ * Resets HP of bunkers and draws them on the screen.
+ */
+void render_initBunkers() {
+	// initialize bunkers
+	bunker_resetHP();
+	
+	// draw bunkers
+	render_drawBunkers();
+}
+
+/**
+ * FUNCTION
+ * Draw Bunkers
+ * 
+ * FUNCTIONALITY
+ * Draws all four bunkers by iterative calls to 'drawBunkerSection()'.
+ */
+void render_drawBunkers() {
+	// iterators
+	uint8_t i;
+	
+	// iterate bunkers
+	for(i = 0; i < NUM_BUNKS; i++) {
+		render_drawBunker(i);
+	}
+}
+
+
+/**
+ * FUNCTION
+ * Draw Bunker
+ * 
+ * FUNCTIONALITY
+ * Draws a whole given bunker.
+ * 
+ * PARAMETERS
+ * @param bunk_index, unsigned 8-bit integer representing index of bunker to be
+ *					  drawn
+ */
+void render_drawBunker(uint8_t bunk_index) {
+	// variables
+	uint16_t x_init;
+	uint16_t x_pos;
+	uint16_t y_init;
+	uint16_t y_pos;
+	
+	// get inits
+	switch(bunk_index) {
+		// bunker 0
+		case BUNK_0:
+			x_init = BUNK0_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 1
+		case BUNK_1:
+			x_init = BUNK1_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 2
+		case BUNK_2:
+			x_init = BUNK2_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 3
+		default:
+			x_init = BUNK3_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+	}
+	
+	// draw bunker
+	for(y_pos = y_init; y_pos < (y_init+BUNK_HIG); y_pos++) {
+		for(x_pos = x_init;	x_pos < (x_init+BUNK_WID); x_pos++) {
+			framePointer[y_pos*640 + x_pos] = (((bunker_24x18[(y_pos-y_init)/IMG_SCALE] >> 
+				(BUNK_WID-x_pos-x_init)/IMG_SCALE)) & 1)*GREEN;
+		}
+	}
+}
+
+
+/**
+ * FUNCTION
+ * Erase Bunker Section
+ * 
+ * FUNCTIONALITY
+ * Erases (damages) portions of a given bunker's section.
+ * 
+ * PARAMETERS
+ * @param section, unsigned 8-bit integer representing section of bunker to be
+ *				   damaged
+ * @param bunker, Bunker structure representing bunker to be drawn
+ */
+void render_eraseBunkerSection(uint8_t section, Bunker bunker) {
+	// variables
+	uint8_t 	sect_hp;	// hp of section to be written to
+	uint32_t	sect_pic[BUNK_SEC_HIG];	// graphic of section to be written
+	uint16_t	x_init;		// initial x-position at which to set 'y_pos'
+	uint16_t	x_pos;		// x-position to be written to
+	uint16_t	y_init;		// initial y-position at which to set 'y_pos'
+	uint16_t	y_pos;		// y-position to be written to
+	uint8_t		iter;		// iterator (used in combining arrays)
+	
+	// which bunker?
+	switch(bunker.index) {
+		// bunker 0
+		case 0:
+			x_init = BUNK0_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 1
+		case 1:
+			x_init = BUNK1_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 2
+		case 2:
+			x_init = BUNK2_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+		
+		// bunker 3
+		default:
+			x_init = BUNK3_X_POS;
+			y_init = BUNKS_Y_POS;
+		break;
+	}
+	
+	// which section?
+	switch(section) {
+		// section 0
+		case 0:
+			// do nothing
+		break;
+		
+		// section 1
+		case 1:
+			x_init += BUNK_SEC_WID;
+		break;
+		
+		// section 2
+		case 2:
+			x_init += (BUNK_SEC_WID + BUNK_SEC_WID);
+		break;
+		
+		// section 3
+		case 3:
+			x_init += (BUNK_SEC_WID + BUNK_SEC_WID + BUNK_SEC_WID);
+		break;
+		
+		// section 4
+		case 4:
+			y_init += BUNK_SEC_HIG;
+		break;
+		
+		// section 5
+		case 5:
+			x_init += BUNK_SEC_WID;
+			y_init += BUNK_SEC_HIG;
+		break;
+		
+		// section 6
+		case 6:
+			x_init += (BUNK_SEC_WID + BUNK_SEC_WID);
+			y_init += BUNK_SEC_HIG;
+		break;
+		
+		// section 7
+		case 7:
+			x_init += (BUNK_SEC_WID + BUNK_SEC_WID + BUNK_SEC_WID);
+			y_init += BUNK_SEC_HIG;
+		break;
+		
+		// section 8
+		case 8:
+			y_init += (BUNK_SEC_HIG + BUNK_SEC_HIG);
+		break;
+		
+		// section 9
+		default:
+			x_init += (BUNK_SEC_WID + BUNK_SEC_WID + BUNK_SEC_WID);
+			y_init += (BUNK_SEC_HIG + BUNK_SEC_HIG);
+		break;
+	}
+	
+	// get hp
+	sect_hp = bunker.hp[section];
+	
+	// bitmask corresponding to hp?
+	switch(sect_hp) {
+		// HP 4
+		case BUNK_MAX_HP:
+			for(iter = 0; iter < BUNK_SEC_HIG; iter++) {
+				sect_pic[iter] = bunkerDamage3_6x6[iter];
+			}
+		break;
+		
+		// HP 3
+		case BUNK_ST1_HP:
+			for(iter = 0; iter < BUNK_SEC_HIG; iter++) {
+				sect_pic[iter] = bunkerDamage2_6x6[iter];
+			}
+		break;
+		
+		// HP 2
+		case BUNK_ST2_HP:
+			for(iter = 0; iter < BUNK_SEC_HIG; iter++) {
+				sect_pic[iter] = bunkerDamage1_6x6[iter];
+			}
+		break;
+		
+		// HP 1
+		case BUNK_ST3_HP:
+			for(iter = 0; iter < BUNK_SEC_HIG; iter++) {
+				sect_pic[iter] = bunkerDamage0_6x6[iter];
+			}
+		break;
+		
+		// HP 0
+		default:
+			for(iter = 0; iter < BUNK_SEC_HIG; iter++) {
+				sect_pic[iter] = 0;
+			}
+		break;
+	}
+	
+	// draw section
+	for(y_pos = y_init; y_pos < (y_init+BUNK_SEC_HIG); y_pos++) {
+		for(x_pos = x_init; x_pos < (x_init+BUNK_SEC_WID); x_pos++) {
+			if(framePointer[y_pos*640 + x_pos] == GREEN) {
+				framePointer[y_pos*640 + x_pos] = (((sect_pic[(y_pos-y_init)/IMG_SCALE] >> 
+					(BUNK_SEC_WID-x_pos-x_init)/IMG_SCALE)) & 1)*GREEN;
+			}
+		}
+	}
+}
+
+
+// Funciton to draw one alien for testing
+//****************************************************************
+void render_drawSingleAlien(){
+	uint16_t row;
+	uint16_t col;
+	point_t alienPos = globals_getAlienPosition();
+	for(row = alienPos.y; row < (alienPos.y + (SINGLE_ALIEN_HEIGHT * IMG_SCALE)); row++){
+		for(col = alienPos.x; col < (alienPos.x + (SINGLE_ALIEN_WIDTH * IMG_SCALE)); col++){
+			framePointer[row*640 + col] = ((alien_top_in_12x8[(row - alienPos.y)/IMG_SCALE]>>(col - alienPos.x)/IMG_SCALE)&1)*WHITE;
+		}
+	}
+}
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+void render_drawAliens() {
+	/*switch(alienDirection){
+	case Left:
+		break;
+	case Right:
+		point_t alienPos = globals_getAlienPosition();
+		for(row = alienPos.y; row < (alienPos.y + (SINGLE_ALIEN_HEIGHT * IMG_SCALE)); row++){
+			for(col = (alienPos.x + (SINGLE_ALIEN_WIDTH * IMG_SCALE)); col > alienPos.x; col--){
+				
+				if(framePointer[row*640 + col] != ((alien_top_in_12x8[(row - alienPos.y)/IMG_SCALE]>>(col - alienPos.x)/IMG_SCALE)&1)*WHITE)
+				if(framePointer[row*640 + col] != framePointer[row*640 + col + PX_TO_MOVE_ALIEN]){
+					framePointer[row*640 + col + PX_TO_MOVE_ALIEN] = framePointer[row*640 + col];
+				}
+				framePointer[row*640 + col] = ((alien_top_in_12x8[(row - alienPos.y)/IMG_SCALE]>>(col - alienPos.x)/IMG_SCALE)&1)*WHITE;
+			}
+		}
+		break;
+	}*/
+}
+
+void render_initAlienBullets(){
+	bullet_t alienBullet0, alienBullet1, alienBullet2, alienBullet3;
+	alienBullet0.active = false;
+	alienBullet0.alienBulletType = diag_up;
+	globals_setAlienBullet0(alienBullet0);
+
+	alienBullet1.active = false;
+	alienBullet1.alienBulletType = cross_up;
+	globals_setAlienBullet1(alienBullet1);
+
+	alienBullet2.active = false;
+	alienBullet2.alienBulletType = diag_up;
+	globals_setAlienBullet2(alienBullet2);
+
+	alienBullet3.active = false;
+	alienBullet3.alienBulletType = cross_up;
+	globals_setAlienBullet3(alienBullet3);
+}
+
+// This randomly picks an alien in the bottom row and fires one of types of
+// alien bullets from them.
+void render_fireAlien() {
+	bullet_t alienBullet0, alienBullet1, alienBullet2, alienBullet3;
+	alienBullet0 = globals_getAlienBullet0();
+	alienBullet1 = globals_getAlienBullet1();
+	alienBullet2 = globals_getAlienBullet2();
+	alienBullet3 = globals_getAlienBullet3();
+
+	// Get random alien coordinates from Alien class/struct ****************
+	point_t alienPos;
+	alienPos.x = 200; // this will be changed
+	alienPos.y = 300; // this will be changed
+	bullet_t bullet;
+	bool drawBullet = false;
+	drawBullet = true;
+	// Calculate where the bullet is going to be
+	bullet.x = alienPos.x + (ALIEN_BULLET_OFFSET_X * SCALE);
+	bullet.y = alienPos.y + (SINGLE_ALIEN_HEIGHT * SCALE);
+	bullet.active = true;
+
+	// Find an alien bullet that isn't currently active
+	// If all bullets are active, then don't draw a new bullet
+	if(!alienBullet0.active){ // If the alien bullet0 is active we'll draw it
+		drawBullet = true;
+		bullet.alienBulletType = alienBullet0.alienBulletType;
+		globals_setAlienBullet0(bullet);
+	} else {
+		if(!alienBullet1.active){ // If the alien bullet1 is active we'll draw it
+			drawBullet = true;
+			bullet.alienBulletType = alienBullet1.alienBulletType;
+			globals_setAlienBullet1(bullet);
+		} else {
+			if(!alienBullet2.active){ // If the alien bullet2 is active we'll draw it
+				drawBullet = true;
+				bullet.alienBulletType = alienBullet2.alienBulletType;
+				globals_setAlienBullet2(bullet);
+			} else {
+				if(!alienBullet3.active){ // If the alien bullet3 is active we'll draw it
+					drawBullet = true;
+					bullet.alienBulletType = alienBullet3.alienBulletType;
+					globals_setAlienBullet3(bullet);
+				}
+			}
+		}
+	}
+
+	uint16_t row = 0; // Row to draw on
+	uint16_t col = 0; // Column to draw on
+	if(drawBullet){
+		xil_printf("Going to draw alien bullet\r\n");
+		switch(bullet.alienBulletType){
+		case diag_up:
+			for(row = bullet.y; row < (bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+				for(col = bullet.x; col < (bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+					framePointer[row*640 + col] = ((diagUp_3x5[(row - bullet.y)/IMG_SCALE]>>(col - bullet.x)/IMG_SCALE)&1)*WHITE;
+				}
+			}
+			break;
+		case cross_up:
+			for(row = bullet.y; row < (bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+				for(col = bullet.x; col < (bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+					framePointer[row*640 + col] = ((crossUp_3x5[(row - bullet.y)/IMG_SCALE]>>(col - bullet.x)/IMG_SCALE)&1)*WHITE;
+				}
+			}
+			break;
+		default:
+			xil_printf("Hit the default when firing alien bullet\r\n");
+		}
+	}
+}
+
+// This will only be called once when the screen is initialized.
+// This draws the tank in it's starting position
+void render_initTank() { 
+	uint16_t row; // Row to draw on
+	uint16_t col; // Column to draw on
+	globals_setTankPosition(TANK_START_POS); // Set the start position of the tank
+	// Draw the tank where it should be on the screen
+	for(row = TANK_Y_POS; row < (TANK_Y_POS + (TANK_HEIGHT * IMG_SCALE)); row++){
+		for(col = globals_getTankPosition(); col < (globals_getTankPosition() + (TANK_WIDTH * IMG_SCALE)); col++){
+			framePointer[row*640 + col] = ((tank_15x8[(row - TANK_Y_POS)/IMG_SCALE]>>(col - globals_getTankPosition())/IMG_SCALE)&1)*GREEN;
+		}
+	}
+}
+
+// This will be called to move the tank left or right while the game is running
+// Definitely going to need to code this a lot better
+void render_drawTank() {
+	uint16_t row = 0; // Row to draw on
+	uint16_t col = 0; // Column to draw on
+	switch(tankDirection){
+	case Left:
+		xil_printf("Trying to move left\r\n");
+		for(row = TANK_Y_POS; row < (TANK_Y_POS + (TANK_HEIGHT * SCALE)); row++){
+			uint16_t counter = PX_TO_MOVE;
+			bool drewGreen = false;
+			for(col = globals_getTankPosition(); col < (globals_getTankPosition() + (TANK_WIDTH * SCALE)); col++){
+				if(!drewGreen && framePointer[row*640 + col] == GREEN){
+					drewGreen = true;
+					while(counter > 0){
+						if(framePointer[row*640 + col] == GREEN){
+							framePointer[row*640 + col - PX_TO_MOVE] = GREEN;
+							counter--;
+							col++;
+						} else {
+							break;
+						}
+					}
+					counter = PX_TO_MOVE;
+				}
+				if(drewGreen && framePointer[row*640 + col] == BLACK){
+					while(counter > 0){
+						framePointer[row*640 + col - PX_TO_MOVE] = BLACK;
+						counter--;
+						col++;
+					}
+					break;
+				}
+			}
+		}
+		// Erase the front part of the tank
+		for(row = TANK_Y_POS + 5; row < (TANK_Y_POS + (TANK_HEIGHT * SCALE)); row++){
+			for(col = globals_getTankPosition()+(TANK_WIDTH*SCALE); col > (globals_getTankPosition()+(TANK_WIDTH*SCALE)-PX_TO_MOVE); col--){
+				framePointer[row*640 + col] = BLACK;
+			}
+		}
+		globals_setTankPosition(globals_getTankPosition() - PX_TO_MOVE);
+		// Now draw where the new tank should be
+		break;
+	case Right:
+		for(row = TANK_Y_POS; row < (TANK_Y_POS + (TANK_HEIGHT * SCALE)); row++){
+			uint16_t counter = PX_TO_MOVE;
+			bool drewGreen = false; // Flag to know when to start looking for BLACK
+			for(col = (globals_getTankPosition() + (TANK_WIDTH * SCALE)); col > globals_getTankPosition(); col--){
+				if(!drewGreen && framePointer[row*640 + col] == GREEN){
+					drewGreen = true;
+					while(counter > 0){
+						if(framePointer[row*640 + col] == GREEN){
+							framePointer[row*640 + col + PX_TO_MOVE] = GREEN;
+							counter--;
+							col--;
+						} else {
+							break;
+						}
+					}
+					counter = PX_TO_MOVE;
+				}
+				if(drewGreen && framePointer[row*640 + col] == BLACK){
+					while(counter > 0){
+						framePointer[row*640 + col + PX_TO_MOVE] = BLACK;
+						counter--;
+						col--;
+					}
+					break;
+				}
+			}
+		}
+		// Erase the front part of the tank
+		for(row = TANK_Y_POS + 5; row < (TANK_Y_POS + (TANK_HEIGHT * SCALE)); row++){
+			for(col = globals_getTankPosition(); col < (globals_getTankPosition() + PX_TO_MOVE); col++){
+				framePointer[row*640 + col] = BLACK;
+			}
+		}
+		globals_setTankPosition(globals_getTankPosition() + PX_TO_MOVE);
+	break;
+	default:
+		xil_printf("Made it to the default for moving tank\r\n");
+	}
+}
+
+void render_drawTankBullet(bullet_t tankBullet){
+	xil_printf("Going to re-draw tank bullet\r\n");
+	//uint16_t xPos = globals_getTankPosition() + (TANK_BULLET_OFFSET * SCALE);
+	//uint16_t yPos = TANK_Y_POS; // The y position will be initialized to the tank y
+	uint16_t i;
+	for(i = 0; i < BULLET_HEIGHT;i++){
+		tankBullet.y--; // Decrement before drawing so the bullet is right above the tank
+		framePointer[tankBullet.y*640 + tankBullet.x] = WHITE; // Draw the bullet in a straight vertical line
+	}
+}
+
+// This erases the tank bullet on the screen
+// The tank bullet gets erased from top to bottom
+void render_eraseTankBullet(bullet_t tankBullet){
+	xil_printf("Going to erase tank bullet\r\n");
+	//uint16_t xPos = globals_getTankPosition() + (TANK_BULLET_OFFSET * SCALE);
+	//uint16_t yPos = TANK_Y_POS; // The y position will be initialized to the tank y
+	uint16_t i;
+	for(i = 0; i < BULLET_HEIGHT;i++){
+		framePointer[tankBullet.y*640 + tankBullet.x] = BLACK; // Draw the bullet in a straight vertical line
+		tankBullet.y++; // Decrement before drawing so the bullet is right above the tank
+	}
+}
+
+// This draws a bullet right above the top of the tank
+void render_fireTank() {
+	bullet_t tankBullet = globals_getTankBullet();
+	if(!tankBullet.active){
+		// Offset the starting x position based off of the tank position
+		tankBullet.x = globals_getTankPosition() + (TANK_BULLET_OFFSET * SCALE);
+		tankBullet.y = TANK_Y_POS; // The y position will be initialized to the tank y
+		uint16_t i;
+		for(i = 0; i < BULLET_HEIGHT;i++){
+			tankBullet.y--; // Decrement before drawing so the bullet is right above the tank
+			framePointer[tankBullet.y*640 + tankBullet.x] = WHITE; // Draw the bullet in a straight vertical line
+		}
+		tankBullet.active = true; // The bullet is now active on the screen
+		globals_setTankBullet(tankBullet); // Store the bullet position globally
+	}
+}
+
+// This function draws the alien bullet that gets passed in
+// This will draw the opposite image of the own displayed (flip the bullet)
+// Need to figure out how to use the pointer in this function*******
+void render_drawAlienBullet(bullet_t *bullet){
+	uint16_t row = 0; // Row to draw on
+	uint16_t col = 0; // Column to draw on
+	switch(*bullet.alienBulletType){
+	case diag_up:
+		for(row = *bullet.y; row < (*bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+			for(col = *bullet.x; col < (*bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+				framePointer[row*640 + col] = ((diagDown_3x5[(row - *bullet.y)/IMG_SCALE]>>(col - *bullet.x)/IMG_SCALE)&1)*WHITE;
+			}
+		}
+		*bullet.alienBulletType = diag_down;
+		break;
+	case cross_up:
+		for(row = bullet.y; row < (bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+			for(col = bullet.x; col < (bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+				framePointer[row*640 + col] = ((crossDown_3x5[(row - bullet.y)/IMG_SCALE]>>(col - bullet.x)/IMG_SCALE)&1)*WHITE;
+			}
+		}
+		bullet.alienBulletType = cross_down;
+		break;
+	case diag_down:
+		for(row = bullet.y; row < (bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+			for(col = bullet.x; col < (bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+				framePointer[row*640 + col] = ((diagUp_3x5[(row - bullet.y)/IMG_SCALE]>>(col - bullet.x)/IMG_SCALE)&1)*WHITE;
+			}
+		}
+		bullet.alienBulletType = diag_up;
+	break;
+	case cross_down:
+		for(row = bullet.y; row < (bullet.y+(BULLET_HEIGHT * SCALE)); row++){
+			for(col = bullet.x; col < (bullet.x + (ALIEN_BULLET_WIDTH * SCALE)); col++){
+				framePointer[row*640 + col] = ((crossUp_3x5[(row - bullet.y)/IMG_SCALE]>>(col - bullet.x)/IMG_SCALE)&1)*WHITE;
+			}
+		}
+		bullet.alienBulletType = cross_up;
+		break;
+	default:
+		xil_printf("Hit the default when firing alien bullet\r\n");
+	}
+}
+
+void render_drawBullets() {
+	bullet_t tankBullet, alienBullet0, alienBullet1, alienBullet2, alienBullet3;
+	tankBullet = globals_getTankBullet();
+	alienBullet0 = globals_getAlienBullet0();
+	alienBullet1 = globals_getAlienBullet1();
+	alienBullet2 = globals_getAlienBullet2();
+	alienBullet3 = globals_getAlienBullet3();
+	if(tankBullet.active){ // If the tank bullet is active we'll draw it
+		//Erase the bullet
+		render_eraseTankBullet(tankBullet);
+		// Draw the new tank bullet;
+		tankBullet.y -= BULLET_HEIGHT; // Draw the new bullet right above the old one
+		render_drawTankBullet(tankBullet);
+		tankBullet.y -= BULLET_HEIGHT;
+		globals_setTankBullet(tankBullet);
+	}
+	if(alienBullet0.active){ // If the alien bullet0 is active we'll draw it
+		alienBullet0.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+		render_drawAlienBullet(&alienBullet0);
+		alienBullet0.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+	}
+	if(alienBullet1.active){ // If the alien bullet1 is active we'll draw it
+		alienBullet1.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+		render_drawAlienBullet(&alienBullet1);
+		alienBullet1.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+	}
+	if(alienBullet2.active){ // If the alien bullet2 is active we'll draw it
+		alienBullet2.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+		render_drawAlienBullet(&alienBullet2);
+		alienBullet2.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+	}
+	if(alienBullet3.active){ // If the alien bullet3 is active we'll draw it
+		alienBullet3.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+		render_drawAlienBullet(&alienBullet3);
+		alienBullet3.y += BULLET_HEIGHT; // Draw the new bullet right below the old one
+	}
+}
+
+void render_drawAll(char input){
+	// declarations
+	char 	response;		// some options require additional input
+	bool 	response_valid;	// user response (see 'response') valid?
+	Bunker	temp_bunk;		// used in case of bunker erosion
+	uint8_t	rand8;			// 8-bit random number
+
+	// switch on input
+	switch(input){
+		case MOVE_TANK_R:
+			tankDirection = Right;
+			render_drawTank();
+		break;
+
+		case MOVE_TANK_L:
+			tankDirection = Left;
+			render_drawTank();
+		break;
+
+		case UPDATE_ALIENS:
+			//render_drawAliens();
+		break;
+
+		case KILL_ALIEN:
+			//render_drawAliens();
+		break;
+
+		case FIRE_TANK:
+			render_fireTank();
+		break;
+
+		case FIRE_ALIEN:
+			render_fireAlien();
+		break;
+
+		case UPDATE_BULLETS:
+			render_drawBullets();
+		break;
+
+		case ERODE_BUNKER:
+			// assume bad input
+			response_valid = false;
+			
+			while(!response_valid) {
+				// prompt user
+				xil_printf("Bunker ID: ");
+				response = getchar();
+				
+				// check input
+				if(response == '0' || response == '1' ||
+				   response == '2' || response == '3') {
+					response_valid = true;
+				} else {
+					xil_printf("Input invalid. Please Try Again.\n");
+				}
+			}
+			
+			// get bunker
+			switch(response) {
+				case '0':
+					temp_bunk = bunker_0;
+				break;
+				
+				case '1':
+					temp_bunk = bunker_1;
+				break;
+				
+				case '2':
+					temp_bunk = bunker_2;
+				break;
+				
+				default:
+					temp_bunk = bunker_3;
+				break;
+			}
+			
+			// damage & draw bunker
+			rand8 = getRand8();
+			rand8 = rand8 % NUM_SECTS;
+			bunker_damageSection(rand8, &temp_bunk);
+			render_eraseBunkerSection(rand8, temp_bunk);
+		break;
+
+		default:
+			xil_printf("Invalid key. Please try again.\n");
+		break;
+	}
+}
+
+void render_initScreen() {
+	xil_printf("Trying to init screen.\r\n");
+	int Status;       // Keep track of success/failure of system function calls.
+	XAxiVdma videoDMAController;
+	// There are 3 steps to initializing the vdma driver and IP.
+	// Step 1: lookup the memory structure that is used to access the vdma driver.
+	XAxiVdma_Config * VideoDMAConfig = XAxiVdma_LookupConfig(XPAR_AXI_VDMA_0_DEVICE_ID);
+	// Step 2: Initialize the memory structure and the hardware.
+	if(XST_FAILURE == XAxiVdma_CfgInitialize(&videoDMAController, VideoDMAConfig,	XPAR_AXI_VDMA_0_BASEADDR)) {
+		xil_printf("VideoDMA Did not initialize.\r\n");
+	}
+	// Step 3: (optional) set the frame store number.
+	if(XST_FAILURE ==  XAxiVdma_SetFrmStore(&videoDMAController, 2, XAXIVDMA_READ)) {
+		xil_printf("Set Frame Store Failed.");
+	}
+	// Initialization is complete at this point.
+
+	// Setup the frame counter.
+	XAxiVdma_FrameCounter myFrameConfig;
+	myFrameConfig.ReadFrameCount = 2;
+	myFrameConfig.ReadDelayTimerCount = 10;
+	myFrameConfig.WriteFrameCount = 2;
+	myFrameConfig.WriteDelayTimerCount = 10;
+	Status = XAxiVdma_SetFrameCounter(&videoDMAController, &myFrameConfig);
+	if (Status != XST_SUCCESS) {
+	   xil_printf("Set frame counter failed %d\r\n", Status);
+	   if(Status == XST_VDMA_MISMATCH_ERROR)
+		   xil_printf("DMA Mismatch Error\r\n");
+	}
+	// Now we tell the driver about the geometry of our frame buffer and a few other things.
+	// Our image is 480 x 640.
+	XAxiVdma_DmaSetup myFrameBuffer;
+	myFrameBuffer.VertSizeInput = 480;    // 480 vertical pixels.
+	myFrameBuffer.HoriSizeInput = 640*4;  // 640 horizontal (32-bit pixels).
+	myFrameBuffer.Stride = 640*4;         // Dont' worry about the rest of the values.
+	myFrameBuffer.FrameDelay = 0;
+	myFrameBuffer.EnableCircularBuf = 1;
+	myFrameBuffer.EnableSync = 0;
+	myFrameBuffer.PointNum = 0;
+	myFrameBuffer.EnableFrameCounter = 0;
+	myFrameBuffer.FixedFrameStoreAddr = 0;
+	if(XST_FAILURE == XAxiVdma_DmaConfig(&videoDMAController, XAXIVDMA_READ, &myFrameBuffer)) {
+		xil_printf("DMA Config Failed\r\n");
+	 }
+	// We need to give the frame buffer pointers to the memory that it will use. This memory
+	// is where you will write your video data. The vdma IP/driver then streams it to the HDMI
+	// IP.
+	 myFrameBuffer.FrameStoreStartAddr[0] = FRAME_BUFFER_0_ADDR;
+
+	 if(XST_FAILURE == XAxiVdma_DmaSetBufferAddr(&videoDMAController, XAXIVDMA_READ,
+						   myFrameBuffer.FrameStoreStartAddr)) {
+		 xil_printf("DMA Set Address Failed Failed\r\n");
+	 }
+	 // Print a sanity message if you get this far.
+	 xil_printf("Woohoo! I made it through initialization.\n\r");
+	 // Now, let's get ready to start displaying some stuff on the screen.
+
+	 // This tells the HDMI controller the resolution of your display (there must be a better way to do this).
+	 XIo_Out32(XPAR_AXI_HDMI_0_BASEADDR, 640*480);
+
+	 // This makes all the pixels on the screen black
+	 int row=0, col=0;
+	 for( row=0; row<480; row++) {
+		 for(col=0; col<640; col++) {
+			framePointer[row*640 + col] = BLACK;
+		 }
+	 }
+
+	 // Print each initial position for the sprites
+	 //render_drawSingleAlien();
+	 render_initTank();
+	 render_initAlienBlock();
+	 render_initBunkers();
+	 render_initAlienBullets(); // Initialize the alien bullets (don't draw them)
+	 //render_initScore();
+	 //render_initLives();
+
+	 // Start the DMA for the read channel only.
+	 if(XST_FAILURE == XAxiVdma_DmaStart(&videoDMAController, XAXIVDMA_READ)){
+		 xil_printf("DMA START FAILED\r\n");
+	 }
+	 int frameIndex = 0;
+	  // We have two frames, let's park on frame 0. Use frameIndex to index them.
+	  // Note that you have to start the DMA process before parking on a frame.
+	  if (XST_FAILURE == XAxiVdma_StartParking(&videoDMAController, frameIndex,  XAXIVDMA_READ)) {
+		 xil_printf("vdma parking failed\n\r");
+	  }
+}
+

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;space_invaders/src/collision.c&apos;" deleteContents="false" description="Delete resource &apos;space_invaders/src/collision.c&apos;" element1="/space_invaders/src/collision.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1508185959311"/>&#x0A;<refactoring comment="Delete resource &apos;space_invaders/src/collision.h&apos;" deleteContents="false" description="Delete resource &apos;space_invaders/src/collision.h&apos;" element1="/space_invaders/src/collision.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1508185965612"/>
+</session>

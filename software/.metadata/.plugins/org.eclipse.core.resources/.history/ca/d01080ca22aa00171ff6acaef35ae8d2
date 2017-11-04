@@ -1,0 +1,362 @@
+// Include Header
+#include "alien.h"
+
+/**
+ * FUNCTION
+ * Reset Aliens
+ * 
+ * FUNCTIONALITY
+ * Resets the 'aliens' structure to its initial values.
+ */
+void alien_resetAliens() {
+    // variables
+    uint8_t i;
+    
+    // set positions
+    aliens.top_y           = ALIEN_START_Y;
+    aliens.btm_y           = ALIEN_START_Y + ALIEN_BLK_HIG;
+    aliens.lft_x           = ALIEN_START_X;
+    aliens.rit_x           = ALIEN_START_X + ALIEN_BLK_WID;
+    
+    // set all alive
+    for(i = 0; i < NUM_ALIENS; i++) {
+        aliens.aliens_alive[i] = ALIEN_ALIVE;
+    }
+    
+    // set columns alive
+    for(i = 0; i < NUM_ALIEN_COLS; i++) {
+        aliens.cols_alive[i] = ALIEN_ALIVE;
+    }
+    
+    // set rows alive
+    for(i = 0; i < NUM_ALIEN_ROWS; i++) {
+        aliens.rows_alive[i] = ALIEN_ALIVE;
+    }
+}
+
+/**
+ * FUNCTION
+ * Kill Alien
+ * 
+ * FUNCTIONALITY
+ * Removes an alien from the index specified. If the alien removed is the last
+ * of its column and the column is the right- or left-most column, or if the
+ * alien is the last of its row and the row is the top- or bottom-most row, then
+ * the corresponding edge of the 'aliens' is adjusted accordingly.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               to be removed; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ */
+void alien_killAlien(uint8_t index) {
+    // last in row?
+    if(alien_lastInRow(index)) {
+        // *add some code here
+        
+    // last in column?
+    } else if(alien_lastInColumn(index)) {
+        // index of column
+        uint8_t col_i = index % NUM_ALIEN_COLS;
+        
+        // in left-most column?
+        if(alien_inLeftColumn(index)) {
+            aliens.lft_x += (ALIEN_WID+ALIEN_SIDE_PAD);
+            
+        // in right-most column?
+        } else if(alien_inRightColumn(index)) {
+            aliens.rit_x -= (ALIEN_WID+ALIEN_SIDE_PAD);
+        }
+        
+        // in middle column
+        aliens.cols_alive[col_i] = ALIEN_DEAD;
+    }
+    
+    // kill alien
+    aliens.aliens_alive[index] = ALIEN_DEAD;
+}
+
+
+/**
+ * FUNCTION
+ * In Top Row?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is in the top-most row in the block.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under question; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ * 
+ * RETURN
+ * @return last, boolean representing whether the alien specified is the top-most row
+ *               in the block
+ */
+bool alien_inTopRow(uint8_t index){
+    // *add some code here
+}
+
+
+/**
+ * FUNCTION
+ * In Bottom Row?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is in the bottom-most row in the block.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under question; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ * 
+ * RETURN
+ * @return last, boolean representing whether the alien specified is the bottom-most
+ *               row in the block
+ */
+bool alien_inBottomRow(uint8_t index){
+    // *add some code here
+}
+
+
+/**
+ * FUNCTION
+ * In Left-Most Column?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is in the left-most column in the block.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under question; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ * 
+ * RETURN
+ * @return last, boolean representing whether the alien specified is the left-most
+ *               column in the block
+ */
+bool alien_inLeftColumn(uint8_t index){
+    // variables
+    uint8_t lm_col;     // index of left-most column
+    bool    inlmc;      // in left-most column?
+    uint8_t i;          // iterator
+    
+    // assume !inlmc
+    inlmc = false;
+    
+    // get 'lm_col'
+    for(i = 0; i < NUM_ALIEN_COLS; i++) {
+        if(aliens.cols_alive[i]) {
+            lm_col = i;
+            break;
+        }
+    }
+    
+    // alien in 'lm_col'?
+    for(i = 0; i < NUM_ALIEN_ROWS; i++) {
+        // temp index
+        uint8_t temp = lm_col + i*NUM_ALIEN_ROWS;
+        
+        if(temp == index) {
+            inlmc = true;
+            break;
+        }
+    }
+    
+    // complete
+    return inlmc;
+}
+
+
+/**
+ * FUNCTION
+ * In Right-Most Column?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is in the right-most column in the block.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under question; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ * 
+ * RETURN
+ * @return last, boolean representing whether the alien specified is the right-most
+ *               column in the block
+ */
+bool alien_inRightColumn(uint8_t index){
+    // variables
+    uint8_t rm_col;     // index of right-most column
+    bool    inrmc;      // in right-most column?
+    uint8_t i;          // iterator
+    
+    // assume !inrmc
+    inrmc = false;
+    
+    // get 'rm_col'
+    for(i = NUM_ALIEN_COLS; i > 0; i--) {
+        if(aliens.cols_alive[i-1]) {
+            rm_col = i;
+            break;
+        }
+    }
+    
+    // alien in 'rm_col'?
+    for(i = 0; i < NUM_ALIEN_ROWS; i++) {
+        // temp index
+        uint8_t temp = rm_col + i*NUM_ALIEN_ROWS;
+        
+        if(temp == index) {
+            inrmc = true;
+            break;
+        }
+    }
+    
+    // complete
+    return inrmc;
+}
+
+
+/**
+ * FUNCTION
+ * Last in Row?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is the last is its row.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under question; note, aliens are indexed in row-major order,
+ *               from 0 (at the top left of the block) to 54 (at the bottom
+ *               right)
+ * 
+ * RETURN
+ * @last, boolean representing whether the alien specified is the last in its
+ *        row
+ */
+bool alien_lastInRow(uint8_t index) {
+    // variables
+    uint8_t row;    // [0-4]
+    bool    last;   // last?
+    uint8_t i;      // iterator
+    
+    // get row number
+    row = index / NUM_ALIEN_COLS; // 2
+    
+    // assume last
+    last = true;
+    
+    // iterate through cols
+    for(i = 0; i < NUM_ALIEN_COLS; i++) {
+        // temp index
+        uint8_t temp = row*NUM_ALIEN_COLS + i;
+        
+        // same as index?
+        if(temp != index) {
+            if(alien_isAlive(temp)) {
+                last = false;
+                break;
+            }
+        }
+    }
+    
+    // complete
+    return last;
+}
+
+
+/**
+ * FUNCTION
+ * Last in Column?
+ * 
+ * FUNCTIONALITY
+ * Checks whether an alien is the last remaining is its column.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under query; note, aliens are indexed in row-major order, from
+ *               0 (at the top left of the block) to 54 (at the bottom right)
+ * 
+ * RETURN
+ * @last, boolean representing all other aliens in the column specified by
+ *        'index' are dead
+ */
+bool alien_lastInColumn(uint8_t index) {
+    // variables
+    uint8_t col;    // [0-10]
+    bool    last;   // last?
+    uint8_t i;      // iterator
+    
+    // get column number
+    col = index % NUM_ALIEN_COLS;
+    
+    // assume last
+    last = true;
+    
+    // iterate through rows
+    for(i = 0; i < NUM_ALIEN_ROWS; i++) {
+        // temp index
+        uint8_t temp = col + i*NUM_ALIEN_ROWS;
+        
+        // same as 'index'
+        if(temp != index) {
+            if(alien_isAlive(temp)) {
+                last = false;
+                break;
+            }
+        }
+    }
+    
+    // complete
+    return last;
+}
+
+
+/**
+ * FUNCTION
+ * Get Bottom Alien
+ * 
+ * FUNCTIONALITY
+ * Returns the location of a random alien from each alien located at the bottom
+ * of their respective columns.
+ * 
+ * RETURN
+ * @param point, a point structure representing the x and y coordinates of
+ *               an alien which exists at the bottom of its column.
+ */
+point_t alien_getBottomAlien() {
+    // variables
+    point_t alien_xy;
+    point_t aliens_xy[NUM_ALIEN_COLS];
+    
+    // *add code here
+    
+    // complete
+    return alien_xy;
+}
+
+
+/**
+ * FUNCTION
+ * Alien Alive?
+ * 
+ * FUNCTIONALITY
+ * Returns whether or not the alien in question is still alive.
+ * 
+ * PARAMETERS
+ * @param index, an unsigned 8-bit integer representing the index of the alien
+ *               under query; note, aliens are indexed in row-major order, from
+ *               0 (at the top left of the block) to 54 (at the bottom right)
+ * 
+ * RETURN
+ * @param alive, a boolean representing whether the alien is alive or not
+ */
+bool alien_isAlive(uint8_t index) {
+    // return alien status
+    return aliens.aliens_alive[index];
+}
