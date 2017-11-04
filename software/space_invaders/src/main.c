@@ -7,7 +7,7 @@
  *
  * AUTHORS
  * Dr. Hutchings (Original Code)
- * Davis Crabb Lab 4 time: 10/9:2H, 10/10:2H, 10/12:2H, 10/14: 2H, 10/16:4H, 10/17:2H 15M, 10/18: 5H 30M
+ * Davis Crabb
  * Peter Loderup
  *
  * UPDATE LOG
