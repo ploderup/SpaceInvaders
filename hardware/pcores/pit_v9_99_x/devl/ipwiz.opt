@@ -1,0 +1,8 @@
+-batch 
+-create pit 
+-ver 9.99.x 
+-dir "C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware" 
+-lang vhdl 
+-bus axi4lite s 
+-reg 2 
+-xps 

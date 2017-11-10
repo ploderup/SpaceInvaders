@@ -1,0 +1,10 @@
+##############################################################################
+## Filename:          C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/pcores/pit_v9_99_x/data/pit_v2_1_0.pao
+## Description:       Peripheral Analysis Order
+## Date:              Thu Nov 09 21:22:20 2017 (by Create and Import Peripheral Wizard)
+##############################################################################
+
+lib proc_common_v3_00_a  all 
+lib axi_lite_ipif_v1_01_a  all 
+lib pit_v9_99_x user_logic vhdl
+lib pit_v9_99_x pit vhdl
