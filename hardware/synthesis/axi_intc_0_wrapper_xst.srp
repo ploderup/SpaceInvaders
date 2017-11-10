@@ -29,11 +29,11 @@ TABLE OF CONTENTS
 ---- Source Parameters
 Input Format                       : MIXED
 Input File Name                    : "axi_intc_0_wrapper_xst.prj"
-Verilog Include Directory          : {"C:\EE427\SpaceInvaderTestHW2\pcores\" "C:\EE427\Atlys_BSB_Support_v_3_4\Atlys_BSB_Support_v_3_4\Atlys_AXI_BSB_Support\lib\Digilent\pcores\" "C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxBFMinterface\pcores\" "C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\" }
+Verilog Include Directory          : {"C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\pcores\" "C:\EE427\Atlys_BSB_Support_v_3_4\Atlys_AXI_BSB_Support\lib\Digilent\pcores\" "C:\Xilinx\13.4\ISE_DS\edk_user_repository\MyProcessorIPLib\pcores\" "C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxBFMinterface\pcores\" "C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\" }
 
 ---- Target Parameters
 Target Device                      : xc6slx45csg324-3
-Output File Name                   : "axi_intc_0_wrapper.ngc"
+Output File Name                   : "../implementation/axi_intc_0_wrapper.ngc"
 
 ---- Source Options
 Top Module Name                    : axi_intc_0_wrapper
@@ -48,7 +48,7 @@ Optimization Effort                : 1
 Hierarchy Separator                : /
 
 ---- Other Options
-Cores Search Directories           : {./}
+Cores Search Directories           : {../implementation}
 
 =========================================================================
 
@@ -428,7 +428,7 @@ Parsing architecture <imp> of entity <intc_core>.
 Parsing VHDL file "C:/Xilinx/13.4/ISE_DS/EDK/hw/XilinxProcessorIPLib/pcores/axi_intc_v1_01_a/hdl/vhdl/axi_intc.vhd" into library axi_intc_v1_01_a
 Parsing entity <axi_intc>.
 Parsing architecture <imp> of entity <axi_intc>.
-Parsing VHDL file "C:\EE427\SpaceInvaderTestHW2\synthesis\parallel_run\hdl\axi_intc_0_wrapper.vhd" into library work
+Parsing VHDL file "C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\hdl\axi_intc_0_wrapper.vhd" into library work
 Parsing entity <axi_intc_0_wrapper>.
 Parsing architecture <STRUCTURE> of entity <axi_intc_0_wrapper>.
 
@@ -470,7 +470,7 @@ INFO:HDLCompiler:679 - "C:/Xilinx/13.4/ISE_DS/EDK/hw/XilinxProcessorIPLib/pcores
 =========================================================================
 
 Synthesizing Unit <axi_intc_0_wrapper>.
-    Related source file is "c:/ee427/spaceinvadertesthw2/synthesis/parallel_run/hdl/axi_intc_0_wrapper.vhd".
+    Related source file is "c:/users/superman/desktop/clgit/spaceinvaders/hardware/hdl/axi_intc_0_wrapper.vhd".
     Summary:
 	no macro.
 Unit <axi_intc_0_wrapper> synthesized.
@@ -485,7 +485,7 @@ WARNING:Xst:37 - Detected unknown constraint/property "sigis". This constraint/p
         C_S_AXI_ADDR_WIDTH = 32
         C_S_AXI_DATA_WIDTH = 32
         C_NUM_INTR_INPUTS = 4
-        C_KIND_OF_INTR = "11111111111111111111111111111001"
+        C_KIND_OF_INTR = "11111111111111111111111111111000"
         C_KIND_OF_EDGE = "11111111111111111111111111111111"
         C_KIND_OF_LVL = "11111111111111111111111111111111"
         C_HAS_IPR = 1
@@ -518,7 +518,7 @@ Synthesizing Unit <intc_core>.
     Related source file is "c:/xilinx/13.4/ise_ds/edk/hw/xilinxprocessoriplib/pcores/axi_intc_v1_01_a/hdl/vhdl/intc_core.vhd".
         C_DWIDTH = 32
         C_NUM_INTR_INPUTS = 4
-        C_KIND_OF_INTR = "11111111111111111111111111111001"
+        C_KIND_OF_INTR = "11111111111111111111111111111000"
         C_KIND_OF_EDGE = "11111111111111111111111111111111"
         C_KIND_OF_LVL = "11111111111111111111111111111111"
         C_HAS_IPR = 1
@@ -555,9 +555,6 @@ WARNING:Xst:647 - Input <Wr_data<31:4>> is never used. This port will be preserv
     Found 1-bit register for signal <isr<3>>.
     Found 32-bit register for signal <ipr>.
     Found 32-bit register for signal <ivr>.
-    Found 1-bit register for signal <INTR_DETECT_GEN[0].EDGE_DETECT_GEN.intr_p1<0>>.
-    Found 1-bit register for signal <INTR_DETECT_GEN[0].EDGE_DETECT_GEN.intr_p2<0>>.
-    Found 1-bit register for signal <INTR_DETECT_GEN[0].EDGE_DETECT_GEN.intr_d1<0>>.
     Found 1-bit register for signal <hw_intr<0>>.
     Found 1-bit register for signal <hw_intr<1>>.
     Found 1-bit register for signal <hw_intr<2>>.
@@ -567,11 +564,10 @@ WARNING:Xst:647 - Input <Wr_data<31:4>> is never used. This port will be preserv
     Found 1-bit register for signal <hw_intr<3>>.
     Found 1-bit register for signal <Irq>.
     Found 1-bit register for signal <mer_int<0>>.
-    Found 1-bit register for signal <INTR_DETECT_GEN<0>.EDGE_DETECT_GEN.intr_sync_0>.
     Found 1-bit register for signal <INTR_DETECT_GEN<3>.EDGE_DETECT_GEN.intr_sync_3>.
     Found 32-bit 7-to-1 multiplexer for signal <Reg_addr[2]_mer[31]_wide_mux_18_OUT> created at line 749.
     Summary:
-	inferred  99 D-type flip-flop(s).
+	inferred  95 D-type flip-flop(s).
 	inferred   8 Multiplexer(s).
 Unit <intc_core> synthesized.
 
@@ -735,8 +731,8 @@ Unit <pselect_f_8> synthesized.
 HDL Synthesis Report
 
 Macro Statistics
-# Registers                                            : 57
- 1-bit register                                        : 52
+# Registers                                            : 53
+ 1-bit register                                        : 48
  2-bit register                                        : 2
  32-bit register                                       : 3
 # Multiplexers                                         : 19
@@ -758,8 +754,8 @@ WARNING:Xst:2404 -  FFs/Latches <ipr<31:4>> (without init value) have a constant
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# Registers                                            : 124
- Flip-Flops                                            : 124
+# Registers                                            : 120
+ Flip-Flops                                            : 120
 # Multiplexers                                         : 11
  1-bit 2-to-1 multiplexer                              : 5
  32-bit 2-to-1 multiplexer                             : 4
@@ -810,8 +806,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 68
- Flip-Flops                                            : 68
+# Registers                                            : 64
+ Flip-Flops                                            : 64
 
 =========================================================================
 
@@ -837,19 +833,19 @@ Primitive and Black Box Usage:
 # BELS                             : 93
 #      GND                         : 1
 #      INV                         : 1
-#      LUT2                        : 13
-#      LUT3                        : 14
+#      LUT2                        : 14
+#      LUT3                        : 13
 #      LUT4                        : 15
 #      LUT5                        : 20
 #      LUT6                        : 25
 #      MUXF7                       : 3
 #      VCC                         : 1
-# FlipFlops/Latches                : 68
+# FlipFlops/Latches                : 64
 #      FD                          : 14
-#      FDC                         : 2
-#      FDR                         : 36
+#      FDC                         : 1
+#      FDR                         : 34
 #      FDRE                        : 14
-#      FDS                         : 2
+#      FDS                         : 1
 
 Device utilization summary:
 ---------------------------
@@ -858,16 +854,16 @@ Selected Device : 6slx45csg324-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              68  out of  54576     0%  
+ Number of Slice Registers:              64  out of  54576     0%  
  Number of Slice LUTs:                   88  out of  27288     0%  
     Number used as Logic:                88  out of  27288     0%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:     95
-   Number with an unused Flip Flop:      27  out of     95    28%  
-   Number with an unused LUT:             7  out of     95     7%  
-   Number of fully used LUT-FF pairs:    61  out of     95    64%  
-   Number of unique control sets:        16
+ Number of LUT Flip Flop pairs used:     92
+   Number with an unused Flip Flop:      28  out of     92    30%  
+   Number with an unused LUT:             4  out of     92     4%  
+   Number of fully used LUT-FF pairs:    60  out of     92    65%  
+   Number of unique control sets:        15
 
 IO Utilization: 
  Number of IOs:                         153
@@ -896,9 +892,8 @@ Clock Information:
 -----------------------------------+----------------------------------------------------------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)                                                      | Load  |
 -----------------------------------+----------------------------------------------------------------------------+-------+
-S_AXI_ACLK                         | NONE(axi_intc_0/ip2bus_rdack_int_d1)                                       | 66    |
+S_AXI_ACLK                         | NONE(axi_intc_0/ip2bus_rdack_int_d1)                                       | 63    |
 Intr<3>                            | NONE(axi_intc_0/INTC_CORE_I/INTR_DETECT_GEN<3>.EDGE_DETECT_GEN.intr_sync_3)| 1     |
-Intr<0>                            | NONE(axi_intc_0/INTC_CORE_I/INTR_DETECT_GEN<0>.EDGE_DETECT_GEN.intr_sync_0)| 1     |
 -----------------------------------+----------------------------------------------------------------------------+-------+
 INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
 
@@ -922,7 +917,7 @@ All values displayed in nanoseconds (ns)
 =========================================================================
 Timing constraint: Default period analysis for Clock 'S_AXI_ACLK'
   Clock period: 3.453ns (frequency: 289.616MHz)
-  Total number of paths / destination ports: 354 / 118
+  Total number of paths / destination ports: 350 / 116
 -------------------------------------------------------------------------
 Delay:               3.453ns (Levels of Logic = 3)
   Source:            axi_intc_0/INTC_CORE_I/isr_0 (FF)
@@ -945,7 +940,7 @@ Delay:               3.453ns (Levels of Logic = 3)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'S_AXI_ACLK'
-  Total number of paths / destination ports: 302 / 105
+  Total number of paths / destination ports: 300 / 103
 -------------------------------------------------------------------------
 Offset:              3.004ns (Levels of Logic = 3)
   Source:            S_AXI_ARVALID (PAD)
@@ -984,25 +979,6 @@ Offset:              1.421ns (Levels of Logic = 1)
                                        (52.0% logic, 48.0% route)
 
 =========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'Intr<0>'
-  Total number of paths / destination ports: 1 / 1
--------------------------------------------------------------------------
-Offset:              1.421ns (Levels of Logic = 1)
-  Source:            S_AXI_ARESETN (PAD)
-  Destination:       axi_intc_0/INTC_CORE_I/INTR_DETECT_GEN<0>.EDGE_DETECT_GEN.intr_sync_0 (FF)
-  Destination Clock: Intr<0> rising
-
-  Data Path: S_AXI_ARESETN to axi_intc_0/INTC_CORE_I/INTR_DETECT_GEN<0>.EDGE_DETECT_GEN.intr_sync_0
-                                Gate     Net
-    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
-    ----------------------------------------  ------------
-     LUT2:I0->O            4   0.203   0.683  axi_intc_0/INTC_CORE_I/Rst_iar[0]_OR_28_o1 (axi_intc_0/INTC_CORE_I/Rst_iar[0]_OR_28_o)
-     FDC:CLR                   0.430          axi_intc_0/INTC_CORE_I/INTR_DETECT_GEN<0>.EDGE_DETECT_GEN.intr_sync_0
-    ----------------------------------------
-    Total                      1.421ns (0.738ns logic, 0.683ns route)
-                                       (52.0% logic, 48.0% route)
-
-=========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'S_AXI_ACLK'
   Total number of paths / destination ports: 40 / 40
 -------------------------------------------------------------------------
@@ -1025,14 +1001,6 @@ Offset:              0.447ns (Levels of Logic = 0)
 Cross Clock Domains Report:
 --------------------------
 
-Clock to Setup on destination clock Intr<0>
----------------+---------+---------+---------+---------+
-               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
-Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
----------------+---------+---------+---------+---------+
-S_AXI_ACLK     |    2.382|         |         |         |
----------------+---------+---------+---------+---------+
-
 Clock to Setup on destination clock Intr<3>
 ---------------+---------+---------+---------+---------+
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
@@ -1046,7 +1014,6 @@ Clock to Setup on destination clock S_AXI_ACLK
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-Intr<0>        |    1.128|         |         |         |
 Intr<3>        |    1.128|         |         |         |
 S_AXI_ACLK     |    3.453|         |         |         |
 ---------------+---------+---------+---------+---------+
@@ -1055,11 +1022,11 @@ S_AXI_ACLK     |    3.453|         |         |         |
 
 
 Total REAL time to Xst completion: 7.00 secs
-Total CPU time to Xst completion: 6.93 secs
+Total CPU time to Xst completion: 7.24 secs
  
 --> 
 
-Total memory usage is 279028 kilobytes
+Total memory usage is 281512 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   21 (   0 filtered)

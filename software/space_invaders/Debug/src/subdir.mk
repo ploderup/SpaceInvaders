@@ -10,6 +10,7 @@ C_SRCS += \
 ../src/functions.c \
 ../src/globals.c \
 ../src/main.c \
+../src/pit_driver.c \
 ../src/platform.c \
 ../src/render.c \
 ../src/saucer.c \
@@ -27,6 +28,7 @@ OBJS += \
 ./src/functions.o \
 ./src/globals.o \
 ./src/main.o \
+./src/pit_driver.o \
 ./src/platform.o \
 ./src/render.o \
 ./src/saucer.o \
@@ -41,6 +43,7 @@ C_DEPS += \
 ./src/functions.d \
 ./src/globals.d \
 ./src/main.d \
+./src/pit_driver.d \
 ./src/platform.d \
 ./src/render.d \
 ./src/saucer.d \

@@ -20,7 +20,8 @@ src/main.d src/main.o: ../src/main.c ../src/platform.h \
   ../../space_invaders_bsp_0/microblaze_0/include/xgpio_l.h \
   ../../space_invaders_bsp_0/microblaze_0/include/mb_interface.h \
   ../../space_invaders_bsp_0/microblaze_0/include/xintc_l.h \
-  ../../space_invaders_bsp_0/microblaze_0/include/xparameters.h
+  ../../space_invaders_bsp_0/microblaze_0/include/xparameters.h \
+  ../src/pit_driver.h
 
 ../src/platform.h:
 
@@ -83,3 +84,5 @@ src/main.d src/main.o: ../src/main.c ../src/platform.h \
 ../../space_invaders_bsp_0/microblaze_0/include/xintc_l.h:
 
 ../../space_invaders_bsp_0/microblaze_0/include/xparameters.h:
+
+../src/pit_driver.h:

@@ -2,4 +2,160 @@
 **** Build of configuration Debug for project space_invaders ****
 
 make all 
-make: Nothing to be done for `all'.
+Building file: ../src/alien.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/alien.d" -MT"src/alien.d" -o"src/alien.o" "../src/alien.c"
+../src/alien.c: In function 'alien_inTopRow':
+../src/alien.c:314: warning: control reaches end of non-void function
+../src/alien.c: In function 'alien_inBottomRow':
+../src/alien.c:335: warning: control reaches end of non-void function
+../src/alien.c: In function 'alienDebugStatePrint':
+../src/alien.c:717: warning: enumeration value 'shoot_st' not handled in switch
+Finished building: ../src/alien.c
+' '
+Building file: ../src/bullet.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/bullet.d" -MT"src/bullet.d" -o"src/bullet.o" "../src/bullet.c"
+../src/bullet.c: In function 'bullet_moveBullets':
+../src/bullet.c:152: warning: implicit declaration of function 'toggleType'
+../src/bullet.c: At top level:
+../src/bullet.c:177: warning: conflicting types for 'toggleType'
+../src/bullet.c:152: warning: previous implicit declaration of 'toggleType' was here
+Finished building: ../src/bullet.c
+' '
+Building file: ../src/bunker.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/bunker.d" -MT"src/bunker.d" -o"src/bunker.o" "../src/bunker.c"
+../src/bunker.c: In function 'bunker_coordsToSection':
+../src/bunker.c:136: warning: control reaches end of non-void function
+Finished building: ../src/bunker.c
+' '
+Building file: ../src/functions.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/functions.d" -MT"src/functions.d" -o"src/functions.o" "../src/functions.c"
+Finished building: ../src/functions.c
+' '
+Building file: ../src/globals.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/globals.d" -MT"src/globals.d" -o"src/globals.o" "../src/globals.c"
+Finished building: ../src/globals.c
+' '
+Building file: ../src/main.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/main.d" -MT"src/main.d" -o"src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+' '
+Building file: ../src/platform.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/platform.d" -MT"src/platform.d" -o"src/platform.o" "../src/platform.c"
+Finished building: ../src/platform.c
+' '
+Building file: ../src/render.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/render.d" -MT"src/render.d" -o"src/render.o" "../src/render.c"
+../src/render.c: In function 'render_eraseTank':
+../src/render.c:724: warning: enumeration value 'Down' not handled in switch
+Finished building: ../src/render.c
+' '
+Building file: ../src/saucer.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/saucer.d" -MT"src/saucer.d" -o"src/saucer.o" "../src/saucer.c"
+../src/saucer.c: In function 'saucer_hitSaucer':
+../src/saucer.c:156: warning: implicit declaration of function 'sound_playUFOExplosion'
+Finished building: ../src/saucer.c
+' '
+Building file: ../src/sound.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sound.d" -MT"src/sound.d" -o"src/sound.o" "../src/sound.c"
+Finished building: ../src/sound.c
+' '
+Building file: ../src/tank.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/tank.d" -MT"src/tank.d" -o"src/tank.o" "../src/tank.c"
+Finished building: ../src/tank.c
+' '
+Building file: ../src/xac97_l.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/xac97_l.d" -MT"src/xac97_l.d" -o"src/xac97_l.o" "../src/xac97_l.c"
+../src/xac97_l.c: In function 'XAC97_InitAudio':
+../src/xac97_l.c:57: warning: unused variable 'i'
+../src/xac97_l.c: In function 'XAC97_RecAudio':
+../src/xac97_l.c:97: warning: unused variable 'i'
+../src/xac97_l.c: In function 'XAC97_PlayAudio':
+../src/xac97_l.c:132: warning: unused variable 'i'
+Finished building: ../src/xac97_l.c
+' '
+Building file: ../src/sounds/explosion.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/explosion.d" -MT"src/sounds/explosion.d" -o"src/sounds/explosion.o" "../src/sounds/explosion.c"
+Finished building: ../src/sounds/explosion.c
+' '
+Building file: ../src/sounds/fastinvader1.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/fastinvader1.d" -MT"src/sounds/fastinvader1.d" -o"src/sounds/fastinvader1.o" "../src/sounds/fastinvader1.c"
+Finished building: ../src/sounds/fastinvader1.c
+' '
+Building file: ../src/sounds/fastinvader2.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/fastinvader2.d" -MT"src/sounds/fastinvader2.d" -o"src/sounds/fastinvader2.o" "../src/sounds/fastinvader2.c"
+Finished building: ../src/sounds/fastinvader2.c
+' '
+Building file: ../src/sounds/fastinvader3.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/fastinvader3.d" -MT"src/sounds/fastinvader3.d" -o"src/sounds/fastinvader3.o" "../src/sounds/fastinvader3.c"
+Finished building: ../src/sounds/fastinvader3.c
+' '
+Building file: ../src/sounds/fastinvader4.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/fastinvader4.d" -MT"src/sounds/fastinvader4.d" -o"src/sounds/fastinvader4.o" "../src/sounds/fastinvader4.c"
+Finished building: ../src/sounds/fastinvader4.c
+' '
+Building file: ../src/sounds/invaderkilled.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/invaderkilled.d" -MT"src/sounds/invaderkilled.d" -o"src/sounds/invaderkilled.o" "../src/sounds/invaderkilled.c"
+Finished building: ../src/sounds/invaderkilled.c
+' '
+Building file: ../src/sounds/shoot.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/shoot.d" -MT"src/sounds/shoot.d" -o"src/sounds/shoot.o" "../src/sounds/shoot.c"
+Finished building: ../src/sounds/shoot.c
+' '
+Building file: ../src/sounds/ufo_highpitch.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/ufo_highpitch.d" -MT"src/sounds/ufo_highpitch.d" -o"src/sounds/ufo_highpitch.o" "../src/sounds/ufo_highpitch.c"
+Finished building: ../src/sounds/ufo_highpitch.c
+' '
+Building file: ../src/sounds/ufo_lowpitch.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/sounds/ufo_lowpitch.d" -MT"src/sounds/ufo_lowpitch.d" -o"src/sounds/ufo_lowpitch.o" "../src/sounds/ufo_lowpitch.c"
+Finished building: ../src/sounds/ufo_lowpitch.c
+' '
+Building file: ../.metadata/.plugins/org.eclipse.cdt.make.core/specs.c
+Invoking: MicroBlaze gcc compiler
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF".metadata/.plugins/org.eclipse.cdt.make.core/specs.d" -MT".metadata/.plugins/org.eclipse.cdt.make.core/specs.d" -o".metadata/.plugins/org.eclipse.cdt.make.core/specs.o" "../.metadata/.plugins/org.eclipse.cdt.make.core/specs.c"
+Finished building: ../.metadata/.plugins/org.eclipse.cdt.make.core/specs.c
+' '
+Building target: space_invaders.elf
+Invoking: MicroBlaze gcc linker
+mb-gcc -Wl,-T -Wl,../src/lscript.ld -L../../space_invaders_bsp_0/microblaze_0/lib -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -o"space_invaders.elf"  ./src/alien.o ./src/bullet.o ./src/bunker.o ./src/functions.o ./src/globals.o ./src/main.o ./src/pit_driver.o ./src/platform.o ./src/render.o ./src/saucer.o ./src/sound.o ./src/tank.o ./src/xac97_l.o  ./src/sounds/explosion.o ./src/sounds/fastinvader1.o ./src/sounds/fastinvader2.o ./src/sounds/fastinvader3.o ./src/sounds/fastinvader4.o ./src/sounds/invaderkilled.o ./src/sounds/shoot.o ./src/sounds/ufo_highpitch.o ./src/sounds/ufo_lowpitch.o  ./.metadata/.plugins/org.eclipse.cdt.make.core/specs.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+Finished building target: space_invaders.elf
+' '
+Invoking: MicroBlaze Print Size
+mb-size space_invaders.elf  |tee "space_invaders.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 105880	 193468	   5672	 305020	  4a77c	space_invaders.elf
+Finished building: space_invaders.elf.size
+' '
+Invoking: Xilinx ELF Check
+elfcheck space_invaders.elf -hw ../../SpaceInvadersHW_hw_platform/system.xml -pe microblaze_0  |tee "space_invaders.elf.elfcheck"
+elfcheck
+Xilinx EDK 13.4 Build EDK_O.87xd
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+
+Command Line: elfcheck -hw ../../SpaceInvadersHW_hw_platform/system.xml -pe
+microblaze_0 space_invaders.elf 
+
+ELF file	: space_invaders.elf
+elfcheck passed.
+Finished building: space_invaders.elf.elfcheck
+' '

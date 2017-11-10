@@ -29,5 +29,7 @@ void sound_playInvaderkilledSound();
 void sound_playShootSound();
 void sound_playUfoSound();
 void sound_resetSaucer();
+void sounds_increaseVolume();
+void sounds_decreaseVolume();
 
 #endif /* SOUND_H_ */

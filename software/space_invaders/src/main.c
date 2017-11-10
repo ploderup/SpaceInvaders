@@ -27,6 +27,7 @@
 #include "xgpio.h"          // Provides access to PB GPIO driver.
 #include "mb_interface.h"   // provides the microblaze interrupt enables, etc.
 #include "xintc_l.h"        // Provides handy macros for the interrupt controller.
+#include "pit_driver.h"
 
 XGpio gpLED;  // This is a handle for the LED GPIO block.
 XGpio gpPB;   // This is a handle for the push-button GPIO block.
@@ -34,6 +35,7 @@ XGpio gpPB;   // This is a handle for the push-button GPIO block.
 // This is going to call all of our tick functions
 // It gets called on every timer interrupt (10ms)
 void timer_interrupt_handler() {
+	xil_printf("INTERRUPT\r\n");
 	alien_tickAliens();   // Enter the alien state machine
 	tank_FSM();           // Enter the tank state machine
 	bullet_FSM();         // Enter the bullet state machine
@@ -69,9 +71,9 @@ void sound_interrupt_handler() {
 // but pb_interrupt_handler() is called before ack'ing the interrupt controller?
 void interrupt_handler_dispatcher(void* ptr) {
 	int intc_status = XIntc_GetIntrStatus(XPAR_INTC_0_BASEADDR);
-	// Check the FIT interrupt first.
-	if (intc_status & XPAR_FIT_TIMER_0_INTERRUPT_MASK){
-		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, XPAR_FIT_TIMER_0_INTERRUPT_MASK);
+	// Check the PIT interrupt first.
+	if (intc_status & XPAR_PIT_0_INTERRUPT_MASK){
+		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, XPAR_PIT_0_INTERRUPT_MASK);
 		timer_interrupt_handler();
 	}
 	// Check the push buttons.
@@ -91,6 +93,8 @@ int main (void) {
     init_platform();
     render_initScreen(); // Draw all initial items onto the screen
     sound_initSound(); // Initial the AC-97
+    xil_printf("Initialize the pit\r\n");
+    pit_Init(); // Initialize the pit
     // Initialize the GPIO peripherals.
     int success;
     success = XGpio_Initialize(&gpPB, XPAR_PUSH_BUTTONS_5BITS_DEVICE_ID);
@@ -105,11 +109,22 @@ int main (void) {
 
     microblaze_register_handler(interrupt_handler_dispatcher, NULL);
     XIntc_EnableIntr(XPAR_INTC_0_BASEADDR,
-    		(XPAR_FIT_TIMER_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK));
+    		(XPAR_PIT_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK));
     XIntc_MasterEnable(XPAR_INTC_0_BASEADDR);
     microblaze_enable_interrupts();
     globals_setGameOver(false);         // Set the game over to be false
-    while(!globals_getIsGameOver());    // play until game over
+    while(!globals_getIsGameOver()){ // play until game over
+    	uint32_t tempInt = 0;
+    	xil_printf("Going to get char\r\n");
+    	char tempChar = getchar();
+    	while(tempChar != '\r'){
+    		tempInt *= 10;
+    		tempInt += atoi(&tempChar);
+    		tempChar = getchar();
+    	}
+    	xil_printf("New value: %d\r\n", tempInt);
+    	pit_setDelay(tempInt);
+    }
     render_drawGameOver();
     cleanup_platform();
 
