@@ -1,0 +1,19 @@
+// pit_driver.c
+#include "pit_driver.h"
+
+void pit_Init(){
+	Pit_mSetPitControlRegisterData(XPAR_PIT_0_BASEADDR, CONTROL_INIT_VALUE);
+	//Pit_mSetPitDelayRegisterData(XPAR_PIT_0_BASEADDR, DELAY_INIT_VALUE);
+}
+
+void pit_setDelay(Xuint32 value){
+	Pit_mSetPitDelayRegisterData(XPAR_PIT_0_BASEADDR, value);
+}
+
+Xuint32 pit_getDelay(){
+	return Pit_mGetPitDelayData(XPAR_PIT_0_BASEADDR);
+}
+
+Xuint32 pit_getControlReg(){
+	return Pit_mGetPitControlData(XPAR_PIT_0_BASEADDR);
+}

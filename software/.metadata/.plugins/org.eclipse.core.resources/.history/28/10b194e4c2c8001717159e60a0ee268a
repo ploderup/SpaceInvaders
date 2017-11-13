@@ -1,0 +1,41 @@
+/**
+ * PIT DRIVER
+ */
+#ifndef PIT_H
+#define PIT_H
+
+// Read / Write Macros
+#include <xbasic_types.h>
+#include <xio.h>
+
+// Using code below here
+#define Pit_mSetPitDelayRegisterData(BaseAddress, value) \
+			XIo_Out32((BaseAddress) + PIT_DELAY_REG,(value))
+
+#define Pit_mSetPitControlRegisterData(BaseAddress, value) \
+			XIo_Out32((BaseAddress) + PIT_CONTROL_REG,(value))
+
+#define Pit_mGetPitControlData(BaseAddress) \
+            XIo_In32((BaseAddress + PIT_CONTROL_REG))
+
+#define Pit_mGetPitDelayData(BaseAddress) \
+            XIo_In32((BaseAddress + PIT_DELAY_REG))
+
+#define XPAR_PIT_0_INTERRUPT_MASK 0X000001
+#define XPAR_AXI_INTC_0_PIT_0_INTERRUPT_INTR 0
+#define XPAR_PIT_0_BASEADDR 0x7BC00000
+#define XPAR_PIT_0_HIGHADDR 0x7BC0FFFF
+
+#define CONTROL_INIT_VALUE  0x7
+#define DELAY_INIT_VALUE	1000000
+
+// Register
+#define PIT_CONTROL_REG 0x04
+#define PIT_DELAY_REG 0x00
+
+void pit_Init();
+void pit_setDelay();
+Xuint32 pit_getControlReg();
+Xuint32 pit_getDelayReg();
+
+#endif
