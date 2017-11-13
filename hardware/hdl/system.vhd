@@ -2110,7 +2110,7 @@ architecture STRUCTURE of system is
       S_AXI_RRESP : out std_logic_vector(1 downto 0);
       S_AXI_RVALID : out std_logic;
       S_AXI_RREADY : in std_logic;
-      Intr : in std_logic_vector(3 downto 0);
+      Intr : in std_logic_vector(4 downto 0);
       Irq : out std_logic
     );
   end component;
@@ -2372,6 +2372,7 @@ architecture STRUCTURE of system is
   signal clk_100_0000MHzPLL0 : std_logic_vector(0 to 0);
   signal clk_600_0000MHz180PLL0_nobuf : std_logic;
   signal clk_600_0000MHzPLL0_nobuf : std_logic;
+  signal fit_timer_0_Interrupt : std_logic;
   signal microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block_BRAM_Addr : std_logic_vector(0 to 31);
   signal microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block_BRAM_Clk : std_logic;
   signal microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block_BRAM_Din : std_logic_vector(0 to 31);
@@ -2452,7 +2453,7 @@ architecture STRUCTURE of system is
   signal net_vcc4 : std_logic_vector(3 downto 0);
   signal pgassign1 : std_logic_vector(9 downto 0);
   signal pgassign2 : std_logic_vector(2 downto 0);
-  signal pgassign3 : std_logic_vector(3 downto 0);
+  signal pgassign3 : std_logic_vector(4 downto 0);
   signal pit_0_interrupt : std_logic;
   signal proc_sys_reset_0_BUS_STRUCT_RESET : std_logic_vector(0 to 0);
   signal proc_sys_reset_0_Dcm_locked : std_logic;
@@ -2546,9 +2547,10 @@ begin
   pgassign2(2 downto 2) <= clk_100_0000MHzPLL0(0 to 0);
   pgassign2(1 downto 1) <= clk_100_0000MHzPLL0(0 to 0);
   pgassign2(0 downto 0) <= clk_100_0000MHzPLL0(0 to 0);
-  pgassign3(3) <= axi_ac97_0_Interrupt;
-  pgassign3(2) <= axi_timer_0_Interrupt;
-  pgassign3(1) <= Push_Buttons_5Bits_IP2INTC_Irpt;
+  pgassign3(4) <= axi_ac97_0_Interrupt;
+  pgassign3(3) <= axi_timer_0_Interrupt;
+  pgassign3(2) <= Push_Buttons_5Bits_IP2INTC_Irpt;
+  pgassign3(1) <= fit_timer_0_Interrupt;
   pgassign3(0) <= pit_0_interrupt;
   net_gnd0 <= '0';
   net_gnd1(0 to 0) <= B"0";
@@ -4630,7 +4632,7 @@ begin
     port map (
       Clk => pgassign1(9),
       Rst => net_gnd0,
-      Interrupt => open
+      Interrupt => fit_timer_0_Interrupt
     );
 
   pit_0 : pit_0_wrapper

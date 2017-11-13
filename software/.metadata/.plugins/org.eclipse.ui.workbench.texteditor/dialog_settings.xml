@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="saucerAlive" key="selection"/>
+		<item value="TIMER" key="selection"/>
 		<list key="findhistory">
+			<item value="timer"/>
+			<item value="mGetStatus"/>
+			<item value="XAC97_isRegisterAccessFinished"/>
+			<item value="AC97_REG_CONTROL_OFFSET"/>
+			<item value="ACCESS_BUSY"/>
+			<item value="REG_ACCESS_BUSY"/>
+			<item value="isRegisterAccessFinished"/>
 			<item value="saucerAlive"/>
-			<item value="Function"/>
-			<item value="sound"/>
-			<item value="saucerHit"/>
-			<item value="tank"/>
-			<item value="explo"/>
-			<item value="hitS"/>
-			<item value="playIn"/>
 		</list>
 		<list key="replacehistory">
 			<item value="saucerCurrentState"/>

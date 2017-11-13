@@ -114,8 +114,8 @@ architecture IMP of user_logic is
   ------------------------------------------
   -- Signals for user logic slave model s/w accessible register example
   ------------------------------------------
-  signal ctrl_reg         	: std_logic_vector(C_SLV_DWIDTH-1 downto 0):= (others => '0');
   signal delay_reg        	: std_logic_vector(C_SLV_DWIDTH-1 downto 0):= (others => '0');
+  signal ctrl_reg         	: std_logic_vector(C_SLV_DWIDTH-1 downto 0):= (others => '0');
   signal timer_reg			: std_logic_vector(TIMER_REG_WIDTH-1 downto 0):= (others => '0');
   signal timer_next			: std_logic_vector(TIMER_REG_WIDTH-1 downto 0):= (others => '0');
   signal slv_reg_write_sel	: std_logic_vector(1 downto 0);
@@ -138,7 +138,7 @@ begin
 	  if Bus2IP_Resetn = '0' then
         ctrl_reg <= (others => '0');
         delay_reg <= (others => '0');
-		timer_reg <= (others => '1');
+		timer_reg <= (others => '0');
 	  
 	  -- Do not reset
 	  else	  
@@ -172,7 +172,7 @@ begin
   
   
   -- implement slave model software accessible register(s) read mux
-  SLAVE_REG_READ_PROC : process( slv_reg_read_sel, ctrl_reg, delay_reg ) is
+  SLAVE_REG_READ_PROC : process( slv_reg_read_sel, delay_reg, ctrl_reg) is
 	begin
 		case slv_reg_read_sel is
 			when "10" => slv_ip2bus_data <= delay_reg;

@@ -94,9 +94,6 @@ WARNING:EDK:4181 - PORT: s2mm_prmry_reset_out_n, CONNECTOR: S2MM_RESET_OUT_N -
 WARNING:EDK:4181 - PORT: M_AXIS_S2MM_ACLK, CONNECTOR: M_AXIS_S2MM_ACLK_int -
    floating connection -
    C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 246 
-WARNING:EDK:4181 - PORT: Interrupt, CONNECTOR: fit_timer_0_Interrupt - floating
-   connection -
-   C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 380 
 
 Performing Clock DRCs...
 

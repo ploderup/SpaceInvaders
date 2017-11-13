@@ -600,9 +600,9 @@ WARNING:Xst:37 - Detected unknown constraint/property "sigis". This constraint/p
     Found 32-bit register for signal <delay_reg>.
     Found 32-bit register for signal <timer_reg>.
     Found 32-bit register for signal <ctrl_reg>.
-    Found 32-bit subtractor for signal <GND_18_o_GND_18_o_sub_14_OUT<31:0>> created at line 169.
-    Found 32-bit 4-to-1 multiplexer for signal <slv_ip2bus_data> created at line 177.
-    Found 32-bit comparator greater for signal <GND_18_o_timer_reg[31]_LessThan_11_o> created at line 169
+    Found 32-bit subtractor for signal <GND_18_o_GND_18_o_sub_14_OUT<31:0>> created at line 177.
+    Found 32-bit 4-to-1 multiplexer for signal <slv_ip2bus_data> created at line 185.
+    Found 32-bit comparator greater for signal <GND_18_o_timer_reg[31]_LessThan_11_o> created at line 177
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  96 D-type flip-flop(s).
@@ -693,7 +693,7 @@ WARNING:Xst:2677 - Node <pit_0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/cs_o
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 0) on block pit_0_wrapper, actual ratio is 1.
+Found area constraint ratio of 100 (+ 0) on block pit_0_wrapper, actual ratio is 0.
 
 Final Macro Processing ...
 
@@ -725,22 +725,22 @@ Top Level Output File Name         : pit_0_wrapper.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 210
+# BELS                             : 177
 #      GND                         : 1
 #      INV                         : 2
 #      LUT1                        : 1
 #      LUT2                        : 5
 #      LUT3                        : 4
-#      LUT4                        : 71
+#      LUT4                        : 38
 #      LUT5                        : 45
 #      LUT6                        : 9
 #      MUXCY                       : 39
 #      VCC                         : 1
 #      XORCY                       : 32
 # FlipFlops/Latches                : 140
-#      FD                          : 34
+#      FD                          : 2
 #      FDR                         : 8
-#      FDRE                        : 98
+#      FDRE                        : 130
 
 Device utilization summary:
 ---------------------------
@@ -750,15 +750,15 @@ Selected Device : 6slx45csg324-3
 
 Slice Logic Utilization: 
  Number of Slice Registers:             140  out of  54576     0%  
- Number of Slice LUTs:                  137  out of  27288     0%  
-    Number used as Logic:               137  out of  27288     0%  
+ Number of Slice LUTs:                  104  out of  27288     0%  
+    Number used as Logic:               104  out of  27288     0%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    197
-   Number with an unused Flip Flop:      57  out of    197    28%  
-   Number with an unused LUT:            60  out of    197    30%  
-   Number of fully used LUT-FF pairs:    80  out of    197    40%  
-   Number of unique control sets:         7
+ Number of LUT Flip Flop pairs used:    164
+   Number with an unused Flip Flop:      24  out of    164    14%  
+   Number with an unused LUT:            60  out of    164    36%  
+   Number of fully used LUT-FF pairs:    80  out of    164    48%  
+   Number of unique control sets:         8
 
 IO Utilization: 
  Number of IOs:                         149
@@ -799,9 +799,9 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 5.312ns (Maximum Frequency: 188.245MHz)
-   Minimum input arrival time before clock: 2.282ns
-   Maximum output required time after clock: 3.681ns
+   Minimum period: 5.228ns (Maximum Frequency: 191.295MHz)
+   Minimum input arrival time before clock: 2.493ns
+   Maximum output required time after clock: 3.614ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -810,91 +810,52 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'S_AXI_ACLK'
-  Clock period: 5.312ns (frequency: 188.245MHz)
-  Total number of paths / destination ports: 22200 / 215
+  Clock period: 5.228ns (frequency: 191.295MHz)
+  Total number of paths / destination ports: 22168 / 247
 -------------------------------------------------------------------------
-Delay:               5.312ns (Levels of Logic = 42)
-  Source:            pit_0/USER_LOGIC_I/timer_reg_0 (FF)
+Delay:               5.228ns (Levels of Logic = 3)
+  Source:            pit_0/USER_LOGIC_I/timer_reg_25 (FF)
   Destination:       pit_0/USER_LOGIC_I/timer_reg_31 (FF)
   Source Clock:      S_AXI_ACLK rising
   Destination Clock: S_AXI_ACLK rising
 
-  Data Path: pit_0/USER_LOGIC_I/timer_reg_0 to pit_0/USER_LOGIC_I/timer_reg_31
+  Data Path: pit_0/USER_LOGIC_I/timer_reg_25 to pit_0/USER_LOGIC_I/timer_reg_31
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               4   0.447   1.028  pit_0/USER_LOGIC_I/timer_reg_0 (pit_0/USER_LOGIC_I/timer_reg_0)
-     LUT5:I0->O            1   0.203   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_lut<0> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_lut<0>)
-     MUXCY:S->O            1   0.172   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<0> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<0>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<1> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<1>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<2> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<2>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<3> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<3>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<4> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<4>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<5> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<5>)
-     MUXCY:CI->O          35   0.019   1.335  pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<6> (pit_0/USER_LOGIC_I/Mcompar_GND_18_o_timer_reg[31]_LessThan_11_o_cy<6>)
-     LUT4:I3->O            1   0.205   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_lut<0> (pit_0/USER_LOGIC_I/Mcount_timer_reg_lut<0>)
-     MUXCY:S->O            1   0.172   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<0> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<0>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<1> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<1>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<2> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<2>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<3> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<3>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<4> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<4>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<5> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<5>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<6> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<6>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<7> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<7>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<8> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<8>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<9> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<9>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<10> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<10>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<11> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<11>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<12> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<12>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<13> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<13>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<14> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<14>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<15> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<15>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<16> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<16>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<17> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<17>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<18> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<18>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<19> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<19>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<20> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<20>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<21> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<21>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<22> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<22>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<23> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<23>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<24> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<24>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<25> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<25>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<26> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<26>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<27> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<27>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<28> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<28>)
-     MUXCY:CI->O           1   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<29> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<29>)
-     MUXCY:CI->O           0   0.019   0.000  pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<30> (pit_0/USER_LOGIC_I/Mcount_timer_reg_cy<30>)
-     XORCY:CI->O           1   0.180   0.580  pit_0/USER_LOGIC_I/Mcount_timer_reg_xor<31> (pit_0/USER_LOGIC_I/Mcount_timer_reg31)
-     LUT4:I3->O            1   0.205   0.000  pit_0/USER_LOGIC_I/timer_reg_31_glue_set (pit_0/USER_LOGIC_I/timer_reg_31_glue_set)
-     FD:D                      0.102          pit_0/USER_LOGIC_I/timer_reg_31
+     FDRE:C->Q             3   0.447   1.015  pit_0/USER_LOGIC_I/timer_reg_25 (pit_0/USER_LOGIC_I/timer_reg_25)
+     LUT6:I0->O            1   0.203   0.924  pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>5 (pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>4)
+     LUT6:I1->O            2   0.203   0.617  pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>7 (pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o)
+     LUT4:I3->O           32   0.205   1.291  pit_0/USER_LOGIC_I/_n0127_inv1 (pit_0/USER_LOGIC_I/_n0127_inv)
+     FDRE:CE                   0.322          pit_0/USER_LOGIC_I/timer_reg_0
     ----------------------------------------
-    Total                      5.312ns (2.370ns logic, 2.942ns route)
-                                       (44.6% logic, 55.4% route)
+    Total                      5.228ns (1.380ns logic, 3.848ns route)
+                                       (26.4% logic, 73.6% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'S_AXI_ACLK'
   Total number of paths / destination ports: 194 / 172
 -------------------------------------------------------------------------
-Offset:              2.282ns (Levels of Logic = 1)
+Offset:              2.493ns (Levels of Logic = 1)
   Source:            S_AXI_ARESETN (PAD)
-  Destination:       pit_0/USER_LOGIC_I/ctrl_reg_31 (FF)
+  Destination:       pit_0/USER_LOGIC_I/timer_reg_31 (FF)
   Destination Clock: S_AXI_ACLK rising
 
-  Data Path: S_AXI_ARESETN to pit_0/USER_LOGIC_I/ctrl_reg_31
+  Data Path: S_AXI_ARESETN to pit_0/USER_LOGIC_I/timer_reg_31
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     INV:I->O             65   0.206   1.646  pit_0/USER_LOGIC_I/Bus2IP_Resetn_inv1_INV_0 (pit_0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/rst_rstpot)
+     INV:I->O             97   0.206   1.857  pit_0/USER_LOGIC_I/Bus2IP_Resetn_inv1_INV_0 (pit_0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/rst_rstpot)
      FDRE:R                    0.430          pit_0/USER_LOGIC_I/delay_reg_0
     ----------------------------------------
-    Total                      2.282ns (0.636ns logic, 1.646ns route)
-                                       (27.9% logic, 72.1% route)
+    Total                      2.493ns (0.636ns logic, 1.857ns route)
+                                       (25.5% logic, 74.5% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'S_AXI_ACLK'
   Total number of paths / destination ports: 79 / 38
 -------------------------------------------------------------------------
-Offset:              3.681ns (Levels of Logic = 3)
+Offset:              3.614ns (Levels of Logic = 3)
   Source:            pit_0/USER_LOGIC_I/timer_reg_25 (FF)
   Destination:       interrupt (PAD)
   Source Clock:      S_AXI_ACLK rising
@@ -903,13 +864,13 @@ Offset:              3.681ns (Levels of Logic = 3)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               4   0.447   1.048  pit_0/USER_LOGIC_I/timer_reg_25 (pit_0/USER_LOGIC_I/timer_reg_25)
+     FDRE:C->Q             3   0.447   1.015  pit_0/USER_LOGIC_I/timer_reg_25 (pit_0/USER_LOGIC_I/timer_reg_25)
      LUT6:I0->O            1   0.203   0.924  pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>5 (pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>4)
-     LUT6:I1->O            3   0.203   0.651  pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>7 (pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o)
+     LUT6:I1->O            2   0.203   0.617  pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o<31>7 (pit_0/USER_LOGIC_I/timer_reg[31]_GND_18_o_equal_17_o)
      LUT2:I1->O            0   0.205   0.000  pit_0/USER_LOGIC_I/interrupt1 (interrupt)
     ----------------------------------------
-    Total                      3.681ns (1.058ns logic, 2.623ns route)
-                                       (28.7% logic, 71.3% route)
+    Total                      3.614ns (1.058ns logic, 2.556ns route)
+                                       (29.3% logic, 70.7% route)
 
 =========================================================================
 
@@ -921,18 +882,18 @@ Clock to Setup on destination clock S_AXI_ACLK
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-S_AXI_ACLK     |    5.312|         |         |         |
+S_AXI_ACLK     |    5.228|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
 Total REAL time to Xst completion: 7.00 secs
-Total CPU time to Xst completion: 7.38 secs
+Total CPU time to Xst completion: 7.33 secs
  
 --> 
 
-Total memory usage is 281576 kilobytes
+Total memory usage is 298472 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   18 (   0 filtered)

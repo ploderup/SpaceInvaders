@@ -49,7 +49,7 @@ INFO:EDK:4130 - IPNAME: axi_s6_ddrx, INSTANCE:MCB_DDR2 - tcl is overriding
    C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\axi_s6_ddrx_v1_05_a\
    data\axi_s6_ddrx_v2_1_0.mpd line 237 
 INFO:EDK:4130 - IPNAME: axi_intc, INSTANCE:axi_intc_0 - tcl is overriding
-   PARAMETER C_NUM_INTR_INPUTS value to 4 -
+   PARAMETER C_NUM_INTR_INPUTS value to 5 -
    C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\axi_intc_v1_01_a\dat
    a\axi_intc_v2_1_0.mpd line 80 
 
@@ -156,9 +156,6 @@ WARNING:EDK:4181 - PORT: s2mm_prmry_reset_out_n, CONNECTOR: S2MM_RESET_OUT_N -
 WARNING:EDK:4181 - PORT: M_AXIS_S2MM_ACLK, CONNECTOR: M_AXIS_S2MM_ACLK_int -
    floating connection -
    C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 246 
-WARNING:EDK:4181 - PORT: Interrupt, CONNECTOR: fit_timer_0_Interrupt - floating
-   connection -
-   C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 380 
 
 Performing Clock DRCs...
 
@@ -235,7 +232,7 @@ INFO:EDK:4130 - IPNAME: axi_s6_ddrx, INSTANCE:MCB_DDR2 - tcl is overriding
    C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\axi_s6_ddrx_v1_05_a\
    data\axi_s6_ddrx_v2_1_0.mpd line 230 
 INFO:EDK:4130 - IPNAME: axi_intc, INSTANCE:axi_intc_0 - tcl is overriding
-   PARAMETER C_KIND_OF_INTR value to 0b11111111111111111111111111111000 -
+   PARAMETER C_KIND_OF_INTR value to 0b11111111111111111111111111110010 -
    C:\Xilinx\13.4\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\axi_intc_v1_01_a\dat
    a\axi_intc_v2_1_0.mpd line 81 
 INFO:EDK:4130 - IPNAME: axi_intc, INSTANCE:axi_intc_0 - tcl is overriding
@@ -344,14 +341,14 @@ Copying cache implementation netlist
 IPNAME:d_qspi_axi INSTANCE:digilent_quadspi_cntlr -
 C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 343 -
 Copying cache implementation netlist
-IPNAME:axi_intc INSTANCE:axi_intc_0 -
-C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 355 -
-Copying cache implementation netlist
 IPNAME:axi_timer INSTANCE:axi_timer_0 -
 C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 366 -
 Copying cache implementation netlist
 IPNAME:fit_timer INSTANCE:fit_timer_0 -
 C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 376 -
+Copying cache implementation netlist
+IPNAME:pit INSTANCE:pit_0 -
+C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 384 -
 Copying cache implementation netlist
 
 Elaborating instances ...
@@ -389,6 +386,9 @@ Running XST synthesis
 INSTANCE:axi_ac97_0 -
 C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 250 -
 Running XST synthesis
+INSTANCE:axi_intc_0 -
+C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 355 -
+Running XST synthesis
 INSTANCE:pit_0 -
 C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware\system.mhs line 384 -
 Running XST synthesis
@@ -403,4 +403,4 @@ INFO:EDK:3509 - NCF files should not be modified as they will be regenerated.
 
 Rebuilding cache ...
 
-Total run time: 34.00 seconds
+Total run time: 43.00 seconds

@@ -35,7 +35,6 @@ XGpio gpPB;   // This is a handle for the push-button GPIO block.
 // This is going to call all of our tick functions
 // It gets called on every timer interrupt (10ms)
 void timer_interrupt_handler() {
-	xil_printf("INTERRUPT\r\n");
 	alien_tickAliens();   // Enter the alien state machine
 	tank_FSM();           // Enter the tank state machine
 	bullet_FSM();         // Enter the bullet state machine
@@ -72,8 +71,9 @@ void sound_interrupt_handler() {
 void interrupt_handler_dispatcher(void* ptr) {
 	int intc_status = XIntc_GetIntrStatus(XPAR_INTC_0_BASEADDR);
 	// Check the PIT interrupt first.
-	if (intc_status & XPAR_PIT_0_INTERRUPT_MASK){
-		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, XPAR_PIT_0_INTERRUPT_MASK);
+	if (intc_status & /*XPAR_FIT_TIMER_0_INTERRUPT_MASK*/XPAR_PIT_0_INTERRUPT_MASK){
+		//xil_printf("Got an interrupt from the pit\r\n");
+		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, /*XPAR_FIT_TIMER_0_INTERRUPT_MASK*/XPAR_PIT_0_INTERRUPT_MASK);
 		timer_interrupt_handler();
 	}
 	// Check the push buttons.
@@ -95,6 +95,8 @@ int main (void) {
     sound_initSound(); // Initial the AC-97
     xil_printf("Initialize the pit\r\n");
     pit_Init(); // Initialize the pit
+    xil_printf("Delay Reg: %d\r\n", pit_getDelayReg());
+    xil_printf("Control Reg: %d\r\n", pit_getControlReg());
     // Initialize the GPIO peripherals.
     int success;
     success = XGpio_Initialize(&gpPB, XPAR_PUSH_BUTTONS_5BITS_DEVICE_ID);
@@ -109,13 +111,14 @@ int main (void) {
 
     microblaze_register_handler(interrupt_handler_dispatcher, NULL);
     XIntc_EnableIntr(XPAR_INTC_0_BASEADDR,
-    		(XPAR_PIT_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK));
+    		(/*XPAR_FIT_TIMER_0_INTERRUPT_MASK*/XPAR_PIT_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK));
     XIntc_MasterEnable(XPAR_INTC_0_BASEADDR);
     microblaze_enable_interrupts();
     globals_setGameOver(false);         // Set the game over to be false
+    uint32_t counter = 0;
     while(!globals_getIsGameOver()){ // play until game over
     	uint32_t tempInt = 0;
-    	xil_printf("Going to get char\r\n");
+    	//xil_printf("Going to get char\r\n");
     	char tempChar = getchar();
     	while(tempChar != '\r'){
     		tempInt *= 10;
@@ -125,6 +128,7 @@ int main (void) {
     	xil_printf("New value: %d\r\n", tempInt);
     	pit_setDelay(tempInt);
     }
+    xil_printf("Counter: %d", counter);
     render_drawGameOver();
     cleanup_platform();
 

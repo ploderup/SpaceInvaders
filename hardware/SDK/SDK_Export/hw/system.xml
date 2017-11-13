@@ -1,5 +1,5 @@
 
-<EDKSYSTEM EDKVERSION="13.4" EDWVERSION="1.2" TIMESTAMP="Thu Nov 09 21:35:02 2017">
+<EDKSYSTEM EDKVERSION="13.4" EDWVERSION="1.2" TIMESTAMP="Mon Nov 13 14:25:44 2017">
 
   <SYSTEMINFO ARCH="spartan6" DEVICE="xc6slx45" PACKAGE="csg324" PART="xc6slx45csg324-3" SOURCE="C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/system.xmp" SPEEDGRADE="-3"/>
 
@@ -9984,10 +9984,10 @@
         <PARAMETER MPD_INDEX="4" NAME="C_S_AXI_DATA_WIDTH" TYPE="INTEGER" VALUE="32">
           <DESCRIPTION>AXI Data Width</DESCRIPTION>
         </PARAMETER>
-        <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="5" NAME="C_NUM_INTR_INPUTS" TYPE="INTEGER" VALUE="4">
+        <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="5" NAME="C_NUM_INTR_INPUTS" TYPE="INTEGER" VALUE="5">
           <DESCRIPTION>Number of Interrupt Inputs </DESCRIPTION>
         </PARAMETER>
-        <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="6" NAME="C_KIND_OF_INTR" TYPE="std_logic_vector" VALUE="0b11111111111111111111111111111000">
+        <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="6" NAME="C_KIND_OF_INTR" TYPE="std_logic_vector" VALUE="0b11111111111111111111111111110010">
           <DESCRIPTION>Type of Interrupt for Each Input </DESCRIPTION>
         </PARAMETER>
         <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="7" NAME="C_KIND_OF_EDGE" TYPE="std_logic_vector" VALUE="0b11111111111111111111111111111111">
@@ -10024,16 +10024,17 @@
             <CONNECTION INSTANCE="clock_generator_0" PORT="CLKOUT2"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" ENDIAN="LITTLE" IS_INSTANTIATED="TRUE" LEFT="3" LSB="0" MHS_INDEX="1" MPD_INDEX="19" MSB="3" NAME="Intr" RIGHT="0" SENSITIVITY="EDGE_RISING" SIGIS="INTERRUPT" SIGNAME="axi_ac97_0_Interrupt &amp; axi_timer_0_Interrupt &amp; Push_Buttons_5Bits_IP2INTC_Irpt &amp; pit_0_interrupt" VECFORMULA="[(C_NUM_INTR_INPUTS-1):0]">
+        <PORT DIR="I" ENDIAN="LITTLE" IS_INSTANTIATED="TRUE" LEFT="4" LSB="0" MHS_INDEX="1" MPD_INDEX="19" MSB="4" NAME="Intr" RIGHT="0" SENSITIVITY="EDGE_RISING" SIGIS="INTERRUPT" SIGNAME="axi_ac97_0_Interrupt &amp; axi_timer_0_Interrupt &amp; Push_Buttons_5Bits_IP2INTC_Irpt &amp; fit_timer_0_Interrupt &amp; pit_0_interrupt" VECFORMULA="[(C_NUM_INTR_INPUTS-1):0]">
           <SIGNALS>
             <SIGNAL NAME="axi_ac97_0_Interrupt"/>
             <SIGNAL NAME="axi_timer_0_Interrupt"/>
             <SIGNAL NAME="Push_Buttons_5Bits_IP2INTC_Irpt"/>
+            <SIGNAL NAME="fit_timer_0_Interrupt"/>
             <SIGNAL NAME="pit_0_interrupt"/>
           </SIGNALS>
           <DESCRIPTION>Interrupt Inputs</DESCRIPTION>
           <CONNECTIONS>
-            <CONNECTION INSTANCE="axi_ac97_0_Interrupt &amp; axi_timer_0_Interrupt &amp; Push_Buttons_5Bits_IP2INTC_Irpt &amp; pit_0_interrupt"/>
+            <CONNECTION INSTANCE="axi_ac97_0_Interrupt &amp; axi_timer_0_Interrupt &amp; Push_Buttons_5Bits_IP2INTC_Irpt &amp; fit_timer_0_Interrupt &amp; pit_0_interrupt"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" IS_INSTANTIATED="TRUE" MHS_INDEX="2" MPD_INDEX="20" NAME="Irq" SENSITIVITY="EDGE_RISING" SIGIS="INTERRUPT" SIGNAME="axi_intc_0_Irq">
@@ -10169,7 +10170,8 @@
         <SOURCE INSTANCE="axi_ac97_0" PRIORITY="0" SIGNAME="axi_ac97_0_Interrupt"/>
         <SOURCE INSTANCE="axi_timer_0" PRIORITY="1" SIGNAME="axi_timer_0_Interrupt"/>
         <SOURCE INSTANCE="Push_Buttons_5Bits" PRIORITY="2" SIGNAME="Push_Buttons_5Bits_IP2INTC_Irpt"/>
-        <SOURCE INSTANCE="pit_0" PRIORITY="3" SIGNAME="pit_0_interrupt"/>
+        <SOURCE INSTANCE="fit_timer_0" PRIORITY="3" SIGNAME="fit_timer_0_Interrupt"/>
+        <SOURCE INSTANCE="pit_0" PRIORITY="4" SIGNAME="pit_0_interrupt"/>
         <TARGET INSTANCE="microblaze_0"/>
       </INTERRUPTINFO>
     </MODULE>
@@ -10384,7 +10386,7 @@
         <PARAMETER CHANGEDBY="SYSTEM" MPD_INDEX="0" NAME="C_FAMILY" TYPE="string" VALUE="spartan6">
           <DESCRIPTION>Device Family</DESCRIPTION>
         </PARAMETER>
-        <PARAMETER CHANGEDBY="USER" IS_INSTANTIATED="TRUE" MHS_INDEX="2" MPD_INDEX="1" NAME="C_NO_CLOCKS" TYPE="integer" VALUE="1000000">
+        <PARAMETER CHANGEDBY="USER" IS_INSTANTIATED="TRUE" MHS_INDEX="2" MPD_INDEX="1" NAME="C_NO_CLOCKS" TYPE="integer" VALUE="100000">
           <DESCRIPTION>Number of Clocks Between Strobes </DESCRIPTION>
         </PARAMETER>
         <PARAMETER MPD_INDEX="2" NAME="C_INACCURACY" TYPE="integer" VALUE="0">
@@ -10396,7 +10398,9 @@
       </PARAMETERS>
       <PORTS>
         <PORT DIR="O" IS_INSTANTIATED="TRUE" MHS_INDEX="0" MPD_INDEX="2" NAME="Interrupt" SENSITIVITY="EDGE_RISING" SIGIS="INTERRUPT" SIGNAME="fit_timer_0_Interrupt">
-          <CONNECTIONS/>
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_intc_0" PORT="Intr"/>
+          </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="100000000" DIR="I" IS_INSTANTIATED="TRUE" MHS_INDEX="1" MPD_INDEX="0" NAME="Clk" SIGIS="CLK" SIGNAME="clk_100_0000MHzPLL0">
           <CONNECTIONS>
@@ -10406,6 +10410,9 @@
         <PORT DIR="I" MPD_INDEX="1" NAME="Rst" SIGNAME="__NOC__"/>
       </PORTS>
       <BUSINTERFACES/>
+      <INTERRUPTINFO TYPE="SOURCE">
+        <TARGET INSTANCE="axi_intc_0" INTC_INDEX="0" PRIORITY="3"/>
+      </INTERRUPTINFO>
     </MODULE>
     <MODULE HWVERSION="9.99.x" INSTANCE="pit_0" IPTYPE="PERIPHERAL" MHS_INDEX="21" MODCLASS="PERIPHERAL" MODTYPE="pit">
       <DESCRIPTION TYPE="SHORT">PIT</DESCRIPTION>
@@ -10560,7 +10567,7 @@
         </MEMRANGE>
       </MEMORYMAP>
       <INTERRUPTINFO TYPE="SOURCE">
-        <TARGET INSTANCE="axi_intc_0" INTC_INDEX="0" PRIORITY="3"/>
+        <TARGET INSTANCE="axi_intc_0" INTC_INDEX="0" PRIORITY="4"/>
       </INTERRUPTINFO>
     </MODULE>
   </MODULES>

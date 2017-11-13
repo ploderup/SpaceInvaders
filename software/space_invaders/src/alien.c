@@ -71,8 +71,6 @@ void alien_tickAliens(){
 			sound_playFastinvaderSound(); // Play the sound for the aliens moving
         	alien_moveAliens(); // Move the aliens
             render_eraseAliens(); // Erase the old aliens before drawing the new ones to the screen
-            // First move the aliens
-
             render_drawAliens(); // Draw the aliens on the screen
             // Check for collisions before drawing to the screen
             alienCurrentState = wait_st; // Go back to wait state to be moved again
