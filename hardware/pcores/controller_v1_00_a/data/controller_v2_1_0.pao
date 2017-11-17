@@ -1,0 +1,10 @@
+##############################################################################
+## Filename:          C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/pcores/controller_v1_00_a/data/controller_v2_1_0.pao
+## Description:       Peripheral Analysis Order
+## Date:              Fri Nov 17 12:06:08 2017 (by Create and Import Peripheral Wizard)
+##############################################################################
+
+lib proc_common_v3_00_a  all 
+lib axi_lite_ipif_v1_01_a  all 
+lib controller_v1_00_a user_logic vhdl
+lib controller_v1_00_a controller vhdl

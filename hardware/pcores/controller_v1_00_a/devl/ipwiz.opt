@@ -1,0 +1,8 @@
+-batch 
+-create controller 
+-ver 1.00.a 
+-dir "C:\Users\superman\Desktop\CLGit\SpaceInvaders\hardware" 
+-lang vhdl 
+-bus axi4lite s 
+-reg 1 
+-xps 
