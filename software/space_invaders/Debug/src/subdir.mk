@@ -7,6 +7,7 @@ C_SRCS += \
 ../src/alien.c \
 ../src/bullet.c \
 ../src/bunker.c \
+../src/controller_driver.c \
 ../src/functions.c \
 ../src/globals.c \
 ../src/main.c \
@@ -25,6 +26,7 @@ OBJS += \
 ./src/alien.o \
 ./src/bullet.o \
 ./src/bunker.o \
+./src/controller_driver.o \
 ./src/functions.o \
 ./src/globals.o \
 ./src/main.o \
@@ -40,6 +42,7 @@ C_DEPS += \
 ./src/alien.d \
 ./src/bullet.d \
 ./src/bunker.d \
+./src/controller_driver.d \
 ./src/functions.d \
 ./src/globals.d \
 ./src/main.d \

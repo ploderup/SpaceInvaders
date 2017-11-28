@@ -600,9 +600,9 @@ WARNING:Xst:37 - Detected unknown constraint/property "sigis". This constraint/p
     Found 32-bit register for signal <delay_reg>.
     Found 32-bit register for signal <timer_reg>.
     Found 32-bit register for signal <ctrl_reg>.
-    Found 32-bit subtractor for signal <GND_18_o_GND_18_o_sub_14_OUT<31:0>> created at line 177.
-    Found 32-bit 4-to-1 multiplexer for signal <slv_ip2bus_data> created at line 185.
-    Found 32-bit comparator greater for signal <GND_18_o_timer_reg[31]_LessThan_11_o> created at line 177
+    Found 32-bit subtractor for signal <GND_18_o_GND_18_o_sub_14_OUT<31:0>> created at line 169.
+    Found 32-bit 4-to-1 multiplexer for signal <slv_ip2bus_data> created at line 177.
+    Found 32-bit comparator greater for signal <GND_18_o_timer_reg[31]_LessThan_11_o> created at line 169
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  96 D-type flip-flop(s).
@@ -888,12 +888,12 @@ S_AXI_ACLK     |    5.228|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 7.00 secs
-Total CPU time to Xst completion: 7.33 secs
+Total REAL time to Xst completion: 8.00 secs
+Total CPU time to Xst completion: 7.94 secs
  
 --> 
 
-Total memory usage is 298472 kilobytes
+Total memory usage is 281960 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   18 (   0 filtered)

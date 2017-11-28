@@ -41,6 +41,12 @@ void timer_interrupt_handler() {
 	saucer_tickSaucer();  // Enter the saucer state machine
 }
 
+// This is invoked each time there is a change in the controller state
+// (result of a push of the button or move of the joystick)
+void controller_interrupt_handler() {
+
+}
+
 // This is invoked each time there is a change in the button state (result of a push or a bounce).
 void pb_interrupt_handler() {
   // Clear the GPIO interrupt.
@@ -81,6 +87,8 @@ void interrupt_handler_dispatcher(void* ptr) {
 		pb_interrupt_handler();
 		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK);
 	}
+
+	// Check the controller joystick and push button
 
 	// check the sound
 	if(intc_status & XPAR_AXI_AC97_0_INTERRUPT_MASK) {

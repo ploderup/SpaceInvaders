@@ -359,7 +359,7 @@ BEGIN axi_intc
  PARAMETER C_HIGHADDR = 0x4120ffff
  BUS_INTERFACE S_AXI = axi4lite_0
  PORT S_AXI_ACLK = clk_100_0000MHzPLL0
- PORT Intr = axi_ac97_0_Interrupt & axi_timer_0_Interrupt & Push_Buttons_5Bits_IP2INTC_Irpt & fit_timer_0_Interrupt & pit_0_interrupt
+ PORT Intr = axi_ac97_0_Interrupt & axi_timer_0_Interrupt & Push_Buttons_5Bits_IP2INTC_Irpt & fit_timer_0_Interrupt & pit_0_interrupt & controller_0_CTRL_int
  PORT Irq = axi_intc_0_Irq
 END
 
@@ -390,5 +390,15 @@ BEGIN pit
  BUS_INTERFACE S_AXI = axi4lite_0
  PORT S_AXI_ACLK = clk_100_0000MHzPLL0
  PORT interrupt = pit_0_interrupt
+END
+
+BEGIN controller
+ PARAMETER INSTANCE = controller_0
+ PARAMETER HW_VER = 1.00.a
+ PARAMETER C_BASEADDR = 0x77200000
+ PARAMETER C_HIGHADDR = 0x7720ffff
+ BUS_INTERFACE S_AXI = axi4lite_0
+ PORT S_AXI_ACLK = clk_100_0000MHzPLL0
+ PORT CTRL_int = controller_0_CTRL_int
 END
 

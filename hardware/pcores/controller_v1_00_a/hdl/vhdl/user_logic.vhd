@@ -80,12 +80,12 @@ entity user_logic is
   port
   (
     -- ADD USER PORTS BELOW THIS LINE ------------------
+	CTRL_int		: out std_logic;
     PMOD_up			: in std_logic;
 	PMOD_down		: in std_logic;
 	PMOD_left		: in std_logic;
 	PMOD_right		: in std_logic;
 	PMOD_button		: in std_logic;
-	CTRL_int		: out std_logic;
     -- ADD USER PORTS ABOVE THIS LINE ------------------
 
     -- DO NOT EDIT BELOW THIS LINE ---------------------
@@ -120,8 +120,8 @@ architecture IMP of user_logic is
   --USER signal declarations added here, as needed for user logic
   signal controller_next				: std_logic_vector(C_SLV_DWIDTH-1 downto 0);
   signal temp_write_reg					: std_logic_vector(C_SLV_DWIDTH-1 downto 0) := (others => '0');
-  signal interrupt_reg					: std_logic_vector(0 downto 0) := (others => '0');
-  signal interrupt_next					: std_logic_vector(0 downto 0);
+  signal interrupt_reg					: std_logic := '0';
+  signal interrupt_next					: std_logic;
   signal ack_sig						: std_logic := '0';
   
   ------------------------------------------
@@ -229,21 +229,22 @@ begin
   -- NEXT STATE LOGIC
   ------------------------------------------
   -- These signals are read directly from the PMOD (see [system.ucf]).
-  controller_next <= (UP_BIT		=> PMOD_up,
-					  DOWN_BIT		=> PMOD_down,
-					  LEFT_BIT		=> PMOD_left,
-					  RIGHT_BIT		=> PMOD_right,
-					  BUTTON_BIT	=> PMOD_button,
-					  ACK_BIT		=> ack_sig,
-					  others		=> '0');
+  controller_next(UP_BIT) 		<= PMOD_up;
+  controller_next(DOWN_BIT) 	<= PMOD_down;
+  controller_next(LEFT_BIT) 	<= PMOD_left;
+  controller_next(RIGHT_BIT) 	<= PMOD_right;
+  controller_next(BUTTON_BIT)	<= PMOD_button;
+  controller_next(ACK_BIT)		<= ack_sig;
 					  
   -- The interrupt bit will function normally (go high on a transition in user input on the
   -- controller) when the acknowledge bit is HIGH. When the acknowledge bit is LOW, however, it
   -- will retain its value; it is level-sensitive.
-  interrupt_next <= ~(controller_reg = controller_next) when (controller_reg(ACK_BIT) = '1') else
-					'1' when (controller_reg(ACK_BIT) = '0') else
-  
-					  
+  interrupt_next <= '1' when interrupt_reg = '1' and controller_reg(ACK_BIT) = '0' else
+					'0' when controller_reg(ACK_BIT) = '1' else
+					'1' when controller_reg /= controller_next else
+					'0';
+
+					
   ------------------------------------------
   -- OUTPUT LOGIC
   ------------------------------------------

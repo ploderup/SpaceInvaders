@@ -106,7 +106,12 @@ entity controller is
   port
   (
     -- ADD USER PORTS BELOW THIS LINE ------------------
-    --USER ports added here
+    CTRL_int                     	: out std_logic;
+	PMOD_up						  	: in std_logic;
+	PMOD_down						: in std_logic;
+	PMOD_left						: in std_logic;
+	PMOD_right						: in std_logic;
+	PMOD_button						: in std_logic;
     -- ADD USER PORTS ABOVE THIS LINE ------------------
 
     -- DO NOT EDIT BELOW THIS LINE ---------------------
@@ -133,12 +138,12 @@ entity controller is
     -- DO NOT EDIT ABOVE THIS LINE ---------------------
   );
 
-  attribute MAX_FANOUT : string;
-  attribute SIGIS : string;
-  attribute MAX_FANOUT of S_AXI_ACLK       : signal is "10000";
-  attribute MAX_FANOUT of S_AXI_ARESETN       : signal is "10000";
-  attribute SIGIS of S_AXI_ACLK       : signal is "Clk";
-  attribute SIGIS of S_AXI_ARESETN       : signal is "Rst";
+  attribute MAX_FANOUT 						: string;
+  attribute SIGIS 							: string;
+  attribute MAX_FANOUT of S_AXI_ACLK       	: signal is "10000";
+  attribute MAX_FANOUT of S_AXI_ARESETN     : signal is "10000";
+  attribute SIGIS of S_AXI_ACLK       		: signal is "Clk";
+  attribute SIGIS of S_AXI_ARESETN       	: signal is "Rst";
 end entity controller;
 
 ------------------------------------------------------------------------------
@@ -175,7 +180,6 @@ architecture IMP of controller is
   ------------------------------------------
   constant USER_SLV_CS_INDEX              : integer              := 0;
   constant USER_SLV_CE_INDEX              : integer              := calc_start_ce_index(IPIF_ARD_NUM_CE_ARRAY, USER_SLV_CS_INDEX);
-
   constant USER_CE_INDEX                  : integer              := USER_SLV_CE_INDEX;
 
   ------------------------------------------
@@ -263,16 +267,19 @@ begin
       -- MAP USER GENERICS BELOW THIS LINE ---------------
       --USER generics mapped here
       -- MAP USER GENERICS ABOVE THIS LINE ---------------
-
       C_NUM_REG                      => USER_NUM_REG,
       C_SLV_DWIDTH                   => USER_SLV_DWIDTH
     )
     port map
     (
       -- MAP USER PORTS BELOW THIS LINE ------------------
-      --USER ports mapped here
+      CTRL_int                      => CTRL_int,
+	  PMOD_up						=> PMOD_up,	
+	  PMOD_down						=> PMOD_down,
+	  PMOD_left						=> PMOD_left,	
+	  PMOD_right					=> PMOD_right,	
+	  PMOD_button					=> PMOD_button,	
       -- MAP USER PORTS ABOVE THIS LINE ------------------
-
       Bus2IP_Clk                     => ipif_Bus2IP_Clk,
       Bus2IP_Resetn                  => ipif_Bus2IP_Resetn,
       Bus2IP_Data                    => ipif_Bus2IP_Data,
