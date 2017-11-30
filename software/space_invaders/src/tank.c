@@ -8,6 +8,12 @@
 #define Y_INIT          385 // Tank y position on the screen
 #define EXPLOSION_TIME  50 // Timer for the explosions to happen
 
+// Controller Mask
+#define CNTLR_LEFT_MASK  4
+#define CNTLR_RIGHT_MASK 8
+
+#define CNTLR_BTN_MASK	 16
+
 // Global Vars
 uint32_t counter;
 static int32_t	x_pos; // Global for x position of the tank
@@ -64,9 +70,9 @@ void tank_FSM() {
         // move state
         case MOVE:
             // ~(both L and R pressed)?
-            if(!((curr_btn & LEFT_BTN_MASK) && (curr_btn & RIGHT_BTN_MASK))) {
+            if(!((curr_cntlr & CNTLR_LEFT_MASK) && (curr_cntlr & CNTLR_RIGHT_MASK))) {
                 // check if the left button was pushed
-                if(curr_btn & LEFT_BTN_MASK) {
+                if(curr_cntlr & CNTLR_LEFT_MASK) {
                     if(!tank_tooCloseToEdge(LEFT)) { // Check if too close to edge
                         render_drawTank(x_pos, y_pos, BLACK); // erase
                         tank_moveTank(LEFT);
@@ -74,7 +80,7 @@ void tank_FSM() {
                     }
                 }
                 // // check if the right button was pushed
-                if(curr_btn & RIGHT_BTN_MASK) {
+                if(curr_cntlr & CNTLR_RIGHT_MASK) {
                     if(!tank_tooCloseToEdge(RIGHT)) { // Check if too close to edge
                         render_drawTank(x_pos, y_pos, BLACK); // erase
                         tank_moveTank(RIGHT);
@@ -83,7 +89,7 @@ void tank_FSM() {
                 }
             }
             // fire tank?
-            if(curr_btn & MID_BTN_MASK) {
+            if(curr_cntlr & CNTLR_BTN_MASK) {
                 curr_state = FIRE;
             // return to idle
             } else {

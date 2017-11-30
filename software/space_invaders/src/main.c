@@ -31,6 +31,7 @@
 
 XGpio gpLED;  // This is a handle for the LED GPIO block.
 XGpio gpPB;   // This is a handle for the push-button GPIO block.
+XGpio gpCNTLR; // This is a handle for the controller GPIO block.
 
 // This is going to call all of our tick functions
 // It gets called on every timer interrupt (10ms)
@@ -44,7 +45,12 @@ void timer_interrupt_handler() {
 // This is invoked each time there is a change in the controller state
 // (result of a push of the button or move of the joystick)
 void controller_interrupt_handler() {
-
+	// Clear the GPIO interrupt.
+	XGpio_InterruptGlobalDisable(&gpCNTLR);      // Turn off all PB interrupts for now.
+	curr_cntlr = XGpio_DiscreteRead(&gpCNTLR, 1);  // Get the current state of the buttons.
+	XGpio_InterruptClear(&gpCNTLR, 0xFFFFFFFF);  // Ack the PB interrupt.
+	XGpio_InterruptGlobalEnable(&gpCNTLR);       // Re-enable PB interrupts.
+	xil_printf("Value of controller: %d", curr_cntlr);
 }
 
 // This is invoked each time there is a change in the button state (result of a push or a bounce).
@@ -89,6 +95,10 @@ void interrupt_handler_dispatcher(void* ptr) {
 	}
 
 	// Check the controller joystick and push button
+	if (intc_status & XPAR_CONTROLLER_IP2INTC_IRPT_MASK){
+		controller_interrupt_handler();
+		XIntc_AckIntr(XPAR_INTC_0_BASEADDR, XPAR_CONTROLLER_IP2INTC_IRPT_MASK);
+	}
 
 	// check the sound
 	if(intc_status & XPAR_AXI_AC97_0_INTERRUPT_MASK) {
@@ -114,12 +124,22 @@ int main (void) {
     XGpio_InterruptGlobalEnable(&gpPB);
     // Enable all interrupts in the push button peripheral.
     XGpio_InterruptEnable(&gpPB, 0xFFFFFFFF);
+
+    // Set up the Controller
+    success = XGpio_Initialize(&gpCNTLR, XPAR_CONTROLLER_DEVICE_ID);
+	// Set the push button peripheral to be inputs.
+	XGpio_SetDataDirection(&gpCNTLR, 1, 0x0000001F);
+	// Enable the global GPIO interrupt for push buttons.
+	XGpio_InterruptGlobalEnable(&gpCNTLR);
+	// Enable all interrupts in the push button peripheral.
+	XGpio_InterruptEnable(&gpCNTLR, 0xFFFFFFFF);
+
     // Enable interrupts in the AC97
     XAC97_EnableInput(XPAR_AXI_AC97_0_BASEADDR, XPAR_AXI_AC97_0_INTERRUPT_MASK);
 
     microblaze_register_handler(interrupt_handler_dispatcher, NULL);
     XIntc_EnableIntr(XPAR_INTC_0_BASEADDR,
-    		(/*XPAR_FIT_TIMER_0_INTERRUPT_MASK*/XPAR_PIT_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK));
+    		(/*XPAR_FIT_TIMER_0_INTERRUPT_MASK*/XPAR_PIT_0_INTERRUPT_MASK | XPAR_PUSH_BUTTONS_5BITS_IP2INTC_IRPT_MASK | XPAR_AXI_AC97_0_INTERRUPT_MASK | XPAR_CONTROLLER_IP2INTC_IRPT_MASK));
     XIntc_MasterEnable(XPAR_INTC_0_BASEADDR);
     microblaze_enable_interrupts();
     globals_setGameOver(false);         // Set the game over to be false

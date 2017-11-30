@@ -31,7 +31,6 @@
 #define RIGHT_BTN_MASK  2 // This is to see when the right button is pushed
 #define MID_BTN_MASK    1 // This is to see if the middle button is pushed
 
-
 // Point is utilized throughout the entire game.
 typedef struct point_t {int32_t x; int32_t y;} point_t;
 
@@ -43,5 +42,6 @@ uint16_t globals_getLives();
 void globals_incScore(uint32_t currentScore);
 uint32_t globals_getScore();
 uint8_t	curr_btn;			// Variable to keep track of the current button value
+uint32_t curr_cntlr;
 
 #endif /* GLOBALS_H_ */

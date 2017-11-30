@@ -58,7 +58,8 @@ entity system_stub is
     axi_ac97_0_Sync_pin : out std_logic;
     axi_ac97_0_SData_Out_pin : out std_logic;
     axi_ac97_0_AC97Reset_n_pin : out std_logic;
-    Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4)
+    Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4);
+    Controller_GPIO_IO_I_pin : in std_logic_vector(4 downto 0)
   );
 end system_stub;
 
@@ -115,7 +116,8 @@ architecture STRUCTURE of system_stub is
       axi_ac97_0_Sync_pin : out std_logic;
       axi_ac97_0_SData_Out_pin : out std_logic;
       axi_ac97_0_AC97Reset_n_pin : out std_logic;
-      Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4)
+      Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4);
+      Controller_GPIO_IO_I_pin : in std_logic_vector(4 downto 0)
     );
   end component;
 
@@ -175,7 +177,8 @@ begin
       axi_ac97_0_Sync_pin => axi_ac97_0_Sync_pin,
       axi_ac97_0_SData_Out_pin => axi_ac97_0_SData_Out_pin,
       axi_ac97_0_AC97Reset_n_pin => axi_ac97_0_AC97Reset_n_pin,
-      Push_Buttons_5Bits_TRI_I => Push_Buttons_5Bits_TRI_I
+      Push_Buttons_5Bits_TRI_I => Push_Buttons_5Bits_TRI_I,
+      Controller_GPIO_IO_I_pin => Controller_GPIO_IO_I_pin
     );
 
 end architecture STRUCTURE;

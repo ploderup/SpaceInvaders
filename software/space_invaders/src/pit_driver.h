@@ -23,8 +23,8 @@
 #define Pit_mGetPitDelayData(BaseAddress) \
             XIo_In32((BaseAddress + PIT_DELAY_REG))
 
-#define XPAR_PIT_0_INTERRUPT_MASK 0X000001 // Interrupt mask for the pit
-#define XPAR_AXI_INTC_0_PIT_0_INTERRUPT_INTR 0
+#define XPAR_PIT_0_INTERRUPT_MASK 0X000002
+#define XPAR_AXI_INTC_0_PIT_0_INTERRUPT_INTR 1
 #define XPAR_PIT_0_BASEADDR 0x7BC00000 // Base address for the pit
 #define XPAR_PIT_0_HIGHADDR 0x7BC0FFFF
 #define CONTROL_INIT_VALUE  0x7 // loop, interrupt, and decrement bits set: 111

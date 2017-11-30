@@ -13,6 +13,9 @@ Loading design module
 "C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/push_butt
 ons_5bits_wrapper.ngc"...
 Loading design module
+"C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/controlle
+r_wrapper.ngc"...
+Loading design module
 "C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/rs232_uar
 t_1_wrapper.ngc"...
 Loading design module
@@ -73,9 +76,6 @@ Loading design module
 "C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/pit_0_wra
 pper.ngc"...
 Loading design module
-"C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/controlle
-r_0_wrapper.ngc"...
-Loading design module
 "C:/Users/superman/Desktop/CLGit/SpaceInvaders/hardware/implementation/microblaz
 e_0_bram_block_wrapper.ngc"...
 Applying constraints in
@@ -132,101 +132,6 @@ WARNING:ConstraintSystem:58 - Constraint <TIMEGRP axi4lite_0_reset_source = FFS
 WARNING:ConstraintSystem:58 - Constraint <TIMEGRP axi4_0_reset_source = FFS PADS
    CPUS;>: CPUS "*" does not match any design objects.
 
-ERROR:ConstraintSystem:59 - Constraint <NET PMOD_up		LOC = "T3" |>
-   [system.ucf(81)]: NET "PMOD_up" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-WARNING:ConstraintSystem - A target design object for the Locate constraint
-   '<NET PMOD_up		LOC = "T3" |> [system.ucf(81)]' could not be found and so the
-   Locate constraint will be removed.
-
-ERROR:ConstraintSystem:59 - Constraint <IOSTANDARD = "LVCMOS33" |>
-   [system.ucf(81)]: NET "PMOD_up" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <PULLUP;> [system.ucf(81)]: NET "PMOD_up"
-   not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <NET PMOD_down	LOC = "R3" |>
-   [system.ucf(82)]: NET "PMOD_down" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-WARNING:ConstraintSystem - A target design object for the Locate constraint
-   '<NET PMOD_down	LOC = "R3" |> [system.ucf(82)]' could not be found and so the
-   Locate constraint will be removed.
-
-ERROR:ConstraintSystem:59 - Constraint <IOSTANDARD = "LVCMOS33" |>
-   [system.ucf(82)]: NET "PMOD_down" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <PULLUP;> [system.ucf(82)]: NET
-   "PMOD_down" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <NET PMOD_left	LOC = "P6" |>
-   [system.ucf(83)]: NET "PMOD_left" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-WARNING:ConstraintSystem - A target design object for the Locate constraint
-   '<NET PMOD_left	LOC = "P6" |> [system.ucf(83)]' could not be found and so the
-   Locate constraint will be removed.
-
-ERROR:ConstraintSystem:59 - Constraint <IOSTANDARD = "LVCMOS33" |>
-   [system.ucf(83)]: NET "PMOD_left" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <PULLUP;> [system.ucf(83)]: NET
-   "PMOD_left" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <NET PMOD_right	LOC = "N5" |>
-   [system.ucf(84)]: NET "PMOD_right" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-WARNING:ConstraintSystem - A target design object for the Locate constraint
-   '<NET PMOD_right	LOC = "N5" |> [system.ucf(84)]' could not be found and so
-   the Locate constraint will be removed.
-
-ERROR:ConstraintSystem:59 - Constraint <IOSTANDARD = "LVCMOS33" |>
-   [system.ucf(84)]: NET "PMOD_right" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <PULLUP;> [system.ucf(84)]: NET
-   "PMOD_right" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <NET PMOD_button	LOC = "V9" |>
-   [system.ucf(85)]: NET "PMOD_button" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-WARNING:ConstraintSystem - A target design object for the Locate constraint
-   '<NET PMOD_button	LOC = "V9" |> [system.ucf(85)]' could not be found and so
-   the Locate constraint will be removed.
-
-ERROR:ConstraintSystem:59 - Constraint <IOSTANDARD = "LVCMOS33" |>
-   [system.ucf(85)]: NET "PMOD_button" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
-ERROR:ConstraintSystem:59 - Constraint <PULLUP;> [system.ucf(85)]: NET
-   "PMOD_button" not found.  Please verify that:
-   1. The specified design element actually exists in the original design.
-   2. The specified object is spelled correctly in the constraint source file.
-
 WARNING:ConstraintSystem - TNM : m_axi_mm2s_aclk was distributed to a DCM but
    new TNM constraints were not derived. This TNM is used in the following user
    groups or specifications:
@@ -254,8 +159,8 @@ WARNING:ConstraintSystem - TNM : s_axi_lite_aclk was distributed to a DCM but
 WARNING:ConstraintSystem - TNM : globclk was distributed to a DCM but new TNM
    constraints were not derived. This TNM is used in the following user groups
    or specifications:
-   <TIMESPEC TS_path1 = FROM globclk TO hdmipclk 14 ns;> [system.ucf(74)]
-   <TIMESPEC TS_path2 = FROM hdmipclk TO globclk 10 ns;> [system.ucf(75)]
+   <TIMESPEC TS_path1 = FROM globclk TO hdmipclk 14 ns;> [system.ucf(83)]
+   <TIMESPEC TS_path2 = FROM hdmipclk TO globclk 10 ns;> [system.ucf(84)]
 
 WARNING:ConstraintSystem:194 - The TNM 'axi4_0_reset_resync', does not directly
    or indirectly drive any flip-flops, latches and/or RAMs and is not actively
@@ -339,7 +244,7 @@ INFO:ConstraintSystem:178 - TNM
 
 WARNING:NgdBuild:1012 - The constraint <CONFIG VCCAUX = "2.5"> is overridden on
    the design object system by the constraint <CONFIG VCCAUX = 3.3;>
-   [system.ucf(42)].
+   [system.ucf(51)].
 WARNING:NgdBuild:1012 - The constraint <NET "zio" IOSTANDARD = "SSTL18_II"> is
    overridden on the design object zio by the constraint <NET zio IOSTANDARD =
    "LVCMOS18_JEDEC";> [system.ucf(15)].
@@ -392,14 +297,13 @@ Partition Implementation Status
 -------------------------------
 
 NGDBUILD Design Results Summary:
-  Number of errors:    15
-  Number of warnings:  42
+  Number of errors:     0
+  Number of warnings:  37
 
-Total memory usage is 295052 kilobytes
+Total memory usage is 297996 kilobytes
 
-Total REAL time to NGDBUILD completion:  43 sec
-Total CPU time to NGDBUILD completion:   43 sec
-
-One or more errors were found during NGDBUILD.  No NGD file will be written.
+Writing NGD file "system.ngd" ...
+Total REAL time to NGDBUILD completion:  45 sec
+Total CPU time to NGDBUILD completion:   45 sec
 
 Writing NGDBUILD log file "system.bld"...

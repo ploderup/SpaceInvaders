@@ -2,10 +2,10 @@
 **** Build of configuration Debug for project space_invaders ****
 
 make all 
-Building file: ../src/controller_driver.c
+Building file: ../src/tank.c
 Invoking: MicroBlaze gcc compiler
-mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/controller_driver.d" -MT"src/controller_driver.d" -o"src/controller_driver.o" "../src/controller_driver.c"
-Finished building: ../src/controller_driver.c
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -I../../space_invaders_bsp_0/microblaze_0/include -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.b -mno-xl-soft-mul -MMD -MP -MF"src/tank.d" -MT"src/tank.d" -o"src/tank.o" "../src/tank.c"
+Finished building: ../src/tank.c
  
 Building target: space_invaders.elf
 Invoking: MicroBlaze gcc linker
@@ -15,7 +15,7 @@ Finished building target: space_invaders.elf
 Invoking: MicroBlaze Print Size
 mb-size space_invaders.elf  |tee "space_invaders.elf.size"
    text	   data	    bss	    dec	    hex	filename
- 106068	 193476	   5676	 305220	  4a844	space_invaders.elf
+ 106356	 193500	   5696	 305552	  4a990	space_invaders.elf
 Finished building: space_invaders.elf.size
  
 Invoking: Xilinx ELF Check

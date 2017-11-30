@@ -58,7 +58,8 @@ entity system is
     axi_ac97_0_Sync_pin : out std_logic;
     axi_ac97_0_SData_Out_pin : out std_logic;
     axi_ac97_0_AC97Reset_n_pin : out std_logic;
-    Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4)
+    Push_Buttons_5Bits_TRI_I : in std_logic_vector(0 to 4);
+    Controller_GPIO_IO_I_pin : in std_logic_vector(4 downto 0)
   );
 end system;
 
@@ -2179,33 +2180,34 @@ architecture STRUCTURE of system is
     );
   end component;
 
-  component controller_0_wrapper is
+  component controller_wrapper is
     port (
       S_AXI_ACLK : in std_logic;
       S_AXI_ARESETN : in std_logic;
       S_AXI_AWADDR : in std_logic_vector(31 downto 0);
       S_AXI_AWVALID : in std_logic;
+      S_AXI_AWREADY : out std_logic;
       S_AXI_WDATA : in std_logic_vector(31 downto 0);
       S_AXI_WSTRB : in std_logic_vector(3 downto 0);
       S_AXI_WVALID : in std_logic;
+      S_AXI_WREADY : out std_logic;
+      S_AXI_BRESP : out std_logic_vector(1 downto 0);
+      S_AXI_BVALID : out std_logic;
       S_AXI_BREADY : in std_logic;
       S_AXI_ARADDR : in std_logic_vector(31 downto 0);
       S_AXI_ARVALID : in std_logic;
-      S_AXI_RREADY : in std_logic;
       S_AXI_ARREADY : out std_logic;
       S_AXI_RDATA : out std_logic_vector(31 downto 0);
       S_AXI_RRESP : out std_logic_vector(1 downto 0);
       S_AXI_RVALID : out std_logic;
-      S_AXI_WREADY : out std_logic;
-      S_AXI_BRESP : out std_logic_vector(1 downto 0);
-      S_AXI_BVALID : out std_logic;
-      S_AXI_AWREADY : out std_logic;
-      CTRL_int : out std_logic;
-      PMOD_up : in std_logic;
-      PMOD_down : in std_logic;
-      PMOD_left : in std_logic;
-      PMOD_right : in std_logic;
-      PMOD_button : in std_logic
+      S_AXI_RREADY : in std_logic;
+      IP2INTC_Irpt : out std_logic;
+      GPIO_IO_I : in std_logic_vector(4 downto 0);
+      GPIO_IO_O : out std_logic_vector(4 downto 0);
+      GPIO_IO_T : out std_logic_vector(4 downto 0);
+      GPIO2_IO_I : in std_logic_vector(31 downto 0);
+      GPIO2_IO_O : out std_logic_vector(31 downto 0);
+      GPIO2_IO_T : out std_logic_vector(31 downto 0)
     );
   end component;
 
@@ -2220,6 +2222,8 @@ architecture STRUCTURE of system is
 
   -- Internal signals
 
+  signal Controller_GPIO_IO_I : std_logic_vector(4 downto 0);
+  signal Controller_IP2INTC_Irpt : std_logic;
   signal Digilent_QuadSPI_Cntlr_C : std_logic;
   signal Digilent_QuadSPI_Cntlr_DQ_I : std_logic_vector(3 downto 0);
   signal Digilent_QuadSPI_Cntlr_DQ_O : std_logic_vector(3 downto 0);
@@ -2402,7 +2406,6 @@ architecture STRUCTURE of system is
   signal clk_100_0000MHzPLL0 : std_logic_vector(0 to 0);
   signal clk_600_0000MHz180PLL0_nobuf : std_logic;
   signal clk_600_0000MHzPLL0_nobuf : std_logic;
-  signal controller_0_CTRL_int : std_logic;
   signal fit_timer_0_Interrupt : std_logic;
   signal microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block_BRAM_Addr : std_logic_vector(0 to 31);
   signal microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block_BRAM_Clk : std_logic;
@@ -2515,7 +2518,7 @@ architecture STRUCTURE of system is
   attribute BOX_TYPE of axi_timer_0_wrapper : component is "user_black_box";
   attribute BOX_TYPE of fit_timer_0_wrapper : component is "user_black_box";
   attribute BOX_TYPE of pit_0_wrapper : component is "user_black_box";
-  attribute BOX_TYPE of controller_0_wrapper : component is "user_black_box";
+  attribute BOX_TYPE of controller_wrapper : component is "user_black_box";
 
 begin
 
@@ -2545,6 +2548,7 @@ begin
   axi_ac97_0_Sync_pin <= axi_ac97_0_Sync;
   axi_ac97_0_SData_Out_pin <= axi_ac97_0_SData_Out;
   axi_ac97_0_AC97Reset_n_pin <= axi_ac97_0_AC97Reset_n;
+  Controller_GPIO_IO_I <= Controller_GPIO_IO_I_pin;
   axi4_0_S_AWID(5 downto 4) <= B"00";
   axi4_0_S_AWADDR(95 downto 64) <= B"00000000000000000000000000000000";
   axi4_0_S_AWLEN(23 downto 16) <= B"00000000";
@@ -2585,7 +2589,7 @@ begin
   pgassign3(3) <= Push_Buttons_5Bits_IP2INTC_Irpt;
   pgassign3(2) <= fit_timer_0_Interrupt;
   pgassign3(1) <= pit_0_interrupt;
-  pgassign3(0) <= controller_0_CTRL_int;
+  pgassign3(0) <= Controller_IP2INTC_Irpt;
   net_gnd0 <= '0';
   net_gnd1(0 to 0) <= B"0";
   net_gnd11(10 downto 0) <= B"00000000000";
@@ -4693,33 +4697,34 @@ begin
       interrupt => pit_0_interrupt
     );
 
-  controller_0 : controller_0_wrapper
+  Controller : controller_wrapper
     port map (
       S_AXI_ACLK => pgassign1(10),
       S_AXI_ARESETN => axi4lite_0_M_ARESETN(10),
       S_AXI_AWADDR => axi4lite_0_M_AWADDR(351 downto 320),
       S_AXI_AWVALID => axi4lite_0_M_AWVALID(10),
+      S_AXI_AWREADY => axi4lite_0_M_AWREADY(10),
       S_AXI_WDATA => axi4lite_0_M_WDATA(351 downto 320),
       S_AXI_WSTRB => axi4lite_0_M_WSTRB(43 downto 40),
       S_AXI_WVALID => axi4lite_0_M_WVALID(10),
+      S_AXI_WREADY => axi4lite_0_M_WREADY(10),
+      S_AXI_BRESP => axi4lite_0_M_BRESP(21 downto 20),
+      S_AXI_BVALID => axi4lite_0_M_BVALID(10),
       S_AXI_BREADY => axi4lite_0_M_BREADY(10),
       S_AXI_ARADDR => axi4lite_0_M_ARADDR(351 downto 320),
       S_AXI_ARVALID => axi4lite_0_M_ARVALID(10),
-      S_AXI_RREADY => axi4lite_0_M_RREADY(10),
       S_AXI_ARREADY => axi4lite_0_M_ARREADY(10),
       S_AXI_RDATA => axi4lite_0_M_RDATA(351 downto 320),
       S_AXI_RRESP => axi4lite_0_M_RRESP(21 downto 20),
       S_AXI_RVALID => axi4lite_0_M_RVALID(10),
-      S_AXI_WREADY => axi4lite_0_M_WREADY(10),
-      S_AXI_BRESP => axi4lite_0_M_BRESP(21 downto 20),
-      S_AXI_BVALID => axi4lite_0_M_BVALID(10),
-      S_AXI_AWREADY => axi4lite_0_M_AWREADY(10),
-      CTRL_int => controller_0_CTRL_int,
-      PMOD_up => net_gnd0,
-      PMOD_down => net_gnd0,
-      PMOD_left => net_gnd0,
-      PMOD_right => net_gnd0,
-      PMOD_button => net_gnd0
+      S_AXI_RREADY => axi4lite_0_M_RREADY(10),
+      IP2INTC_Irpt => Controller_IP2INTC_Irpt,
+      GPIO_IO_I => Controller_GPIO_IO_I,
+      GPIO_IO_O => open,
+      GPIO_IO_T => open,
+      GPIO2_IO_I => net_gnd32(0 to 31),
+      GPIO2_IO_O => open,
+      GPIO2_IO_T => open
     );
 
   iobuf_0 : IOBUF

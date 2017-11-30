@@ -1,0 +1,52 @@
+/******************************************************************************
+ * globals.h
+ * ==========================================================================
+ * COURSE INFO
+ * ECEn 427: Embedded Programming
+ * Prof. Brad Hutchings
+ *
+ * AUTHORS
+ * Davis Crabb
+ * Peter Loderup
+ *
+ * UPDATE LOG
+ * 28 Sep 2017 | Started file. Setup functions for retrieval of various
+ * 				 object positions.
+ * 03 Oct 2017 | Added bunker struct. Added enumerated type for bunker
+ *               states.
+ * 14 Oct 2017 | Removed all enumerations, definitions and structures relating
+ *               to bullets and moved to 'bullet.h', 'bullet.c'.
+ *****************************************************************************/
+
+#ifndef globals_h
+#define globals_h
+
+#include <stdint.h>
+#include <stdbool.h> // Include so we can use bool
+
+// Defines
+#define UP_BTN_MASK     16 // This is to see when up is pushed
+#define DOWN_BTN_MASK   4 // Mask to see when the down button is pushed
+#define LEFT_BTN_MASK   8 // This is to see when the left button is pushed
+#define RIGHT_BTN_MASK  2 // This is to see when the right button is pushed
+#define MID_BTN_MASK    1 // This is to see if the middle button is pushed
+
+#define CNTLR_UP_MASK	 2
+#define CNTLR_DOWN_MASK  8
+#define CNTLR_LEFT_MASK  4
+#define CNTLR_RIGHT_MASK 1
+#define CNTLR_BTN_MASK	 16
+
+// Point is utilized throughout the entire game.
+typedef struct point_t {int32_t x; int32_t y;} point_t;
+
+void globals_setGameOver(bool gameOver);
+bool globals_getIsGameOver();
+void globals_decLives();
+void globals_setLives(uint16_t currentLives);
+uint16_t globals_getLives();
+void globals_incScore(uint32_t currentScore);
+uint32_t globals_getScore();
+uint8_t	curr_btn;			// Variable to keep track of the current button value
+
+#endif /* GLOBALS_H_ */

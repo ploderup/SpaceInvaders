@@ -14,6 +14,15 @@ NET RS232_Uart_1_sout LOC = "B16"  |  IOSTANDARD = "LVCMOS33";
 NET rzq IOSTANDARD = "LVCMOS18_JEDEC";
 NET zio IOSTANDARD = "LVCMOS18_JEDEC";
 
+###############################################################################
+# PMOD Pinout (for Controller)							   					  #
+###############################################################################
+NET Controller_GPIO_IO_I_pin[0]	LOC = "T3" | IOSTANDARD = "LVCMOS18" | PULLDOWN; #UP
+NET Controller_GPIO_IO_I_pin[1]	LOC = "R3" | IOSTANDARD = "LVCMOS18" | PULLDOWN; #DOWN
+NET Controller_GPIO_IO_I_pin[2]	LOC = "P6" | IOSTANDARD = "LVCMOS18" | PULLDOWN; #LEFT
+NET Controller_GPIO_IO_I_pin[3]	LOC = "N5" | IOSTANDARD = "LVCMOS18" | PULLDOWN; #RIGHT
+NET Controller_GPIO_IO_I_pin[4]	LOC = "V9" | IOSTANDARD = "LVCMOS18" | PULLDOWN; #BUTTON
+
 #Push Buttons
 #
 #
@@ -73,16 +82,6 @@ NET "*Inst_DynClkGen?PllOut_x1" TNM_NET = hdmipclk;
 
 TIMESPEC TS_path1 = FROM globclk TO hdmipclk 14 ns;
 TIMESPEC TS_path2 = FROM hdmipclk TO globclk 10 ns;
-
-
-###############################################################################
-# PMOD Pinout (for Controller)							   					  #
-###############################################################################
-NET PMOD_up		LOC = "T3" | IOSTANDARD = "LVCMOS33" | PULLUP;
-NET PMOD_down	LOC = "R3" | IOSTANDARD = "LVCMOS33" | PULLUP;
-NET PMOD_left	LOC = "P6" | IOSTANDARD = "LVCMOS33" | PULLUP;
-NET PMOD_right	LOC = "N5" | IOSTANDARD = "LVCMOS33" | PULLUP;
-NET PMOD_button	LOC = "V9" | IOSTANDARD = "LVCMOS33" | PULLUP;
 
 
 ###############################################################################
